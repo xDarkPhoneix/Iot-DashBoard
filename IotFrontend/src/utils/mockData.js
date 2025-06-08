@@ -162,19 +162,7 @@ export const mockWidgets = [
     position: { x: 0, y: 3, width: 4, height: 3 },
     config: {}
   },
-  {
-    id: 'widget-5',
-    type: 'chart',
-    title: 'Power Consumption',
-    deviceId: 'device-5',
-    dataKey: 'power',
-    position: { x: 4, y: 3, width: 8, height: 3 },
-    config: {
-      chartType: 'bar',
-      timeRange: '6h',
-      color: '#EF4444'
-    }
-  }
+
 ];
 
 export const mockAlerts = [

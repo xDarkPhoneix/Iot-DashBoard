@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useDashboard } from '../contexts/DashboardContext';
-import ChartWidget from './widgets/ChartWidget';
-import GaugeWidget from './widgets/GaugeWidget';
-import StatWidget from './widgets/StatWidget';
-import ControlWidget from './widgets/ControlWidget';
+import ChartWidget from './Widgets/ChartWidget';
+import GaugeWidget from './Widgets/GaugeWidget';
+import StatWidget from './Widgets/StatWidget';
+import ControlWidget from './Widgets/ControlWidget';
 import AddWidgetModal from './AddWidgetModal';
 import { Plus, Grid3X3 } from 'lucide-react';
 
