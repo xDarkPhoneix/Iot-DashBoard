@@ -92,9 +92,9 @@ const AutomationPanel = () => {
                 >
                   {rule.enabled ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
                 </button>
-                <button className="p-2 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/50 rounded-lg transition-colors">
+                {/* <button className="p-2 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/50 rounded-lg transition-colors">
                   <Edit className="w-5 h-5" />
-                </button>
+                </button> */}
                 <button
                   onClick={() => handleDeleteRule(rule.id)}
                   className="p-2 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/50 rounded-lg transition-colors"

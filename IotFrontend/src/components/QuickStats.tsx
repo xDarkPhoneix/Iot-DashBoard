@@ -32,15 +32,7 @@ const QuickStats = ({ onlineDevices, totalDevices, activeAlerts }) => {
       bgColor: activeAlerts > 0 ? 'bg-red-100 dark:bg-red-900/50' : 'bg-green-100 dark:bg-green-900/50',
       trend: activeAlerts > 0 ? 'down' : 'neutral',
     },
-    {
-      title: 'Power Usage',
-      value: '1.2 kW',
-      change: '-5% from last hour',
-      icon: Zap,
-      color: 'text-purple-600 dark:text-purple-400',
-      bgColor: 'bg-purple-100 dark:bg-purple-900/50',
-      trend: 'down',
-    },
+   
   ];
 
   return (

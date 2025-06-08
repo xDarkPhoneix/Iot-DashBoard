@@ -64,56 +64,56 @@ export const mockDevices = [
       }
     }
   },
-  {
-    id: 'device-4',
-    name: 'Smart Light',
-    type: 'actuator',
-    status: 'online',
-    lastSeen: new Date(),
-    location: 'Kitchen',
-    controls: [
-      {
-        id: 'brightness',
-        name: 'Brightness',
-        type: 'slider',
-        value: 75,
-        min: 0,
-        max: 100,
-        unit: '%'
-      },
-      {
-        id: 'power',
-        name: 'Power',
-        type: 'toggle',
-        value: true
-      }
-    ],
-    data: {
-      timestamp: new Date(),
-      values: {
-        brightness: 75,
-        power: true,
-        colorTemp: 3000
-      }
-    }
-  },
-  {
-    id: 'device-5',
-    name: 'Energy Monitor',
-    type: 'sensor',
-    status: 'online',
-    lastSeen: new Date(),
-    location: 'Utility Room',
-    data: {
-      timestamp: new Date(),
-      values: {
-        power: 1250.5,
-        voltage: 240.2,
-        current: 5.2,
-        energy: 15.8
-      }
-    }
-  }
+  // {
+  //   id: 'device-4',
+  //   name: 'Smart Light',
+  //   type: 'actuator',
+  //   status: 'online',
+  //   lastSeen: new Date(),
+  //   location: 'Kitchen',
+  //   controls: [
+  //     {
+  //       id: 'brightness',
+  //       name: 'Brightness',
+  //       type: 'slider',
+  //       value: 75,
+  //       min: 0,
+  //       max: 100,
+  //       unit: '%'
+  //     },
+  //     {
+  //       id: 'power',
+  //       name: 'Power',
+  //       type: 'toggle',
+  //       value: true
+  //     }
+  //   ],
+  //   data: {
+  //     timestamp: new Date(),
+  //     values: {
+  //       brightness: 75,
+  //       power: true,
+  //       colorTemp: 3000
+  //     }
+  //   }
+  // },
+  // {
+  //   id: 'device-5',
+  //   name: 'Energy Monitor',
+  //   type: 'sensor',
+  //   status: 'online',
+  //   lastSeen: new Date(),
+  //   location: 'Utility Room',
+  //   data: {
+  //     timestamp: new Date(),
+  //     values: {
+  //       power: 1250.5,
+  //       voltage: 240.2,
+  //       current: 5.2,
+  //       energy: 15.8
+  //     }
+  //   }
+  // }
 ];
 
 export const mockWidgets = [
