@@ -32,7 +32,7 @@ export const DashboardProvider = ({ children }) => {
               humidity: Math.round((40 + Math.random() * 30) * 10) / 10,
               pressure: Math.round((1013 + (Math.random() - 0.5) * 20) * 10) / 10,
               motion: Math.random() > 0.8,
-              power: Math.round(Math.random() * 1000 * 10) / 10,
+              power: Math.round((Math.random() * 1000) * 10) / 10,
             }
           }
         }))
@@ -50,58 +50,68 @@ export const DashboardProvider = ({ children }) => {
     );
   };
 
+  const removeDevice = (deviceId) => {
+    setDevices(prev => prev.filter(device => device.id !== deviceId));
+    setWidgets(prev => prev.filter(widget => widget.deviceId !== deviceId));
+  };
+
+  const addDevice = (device) => {
+    const newDevice = {
+      ...device,
+      id: `device-${Date.now()}`,
+      lastSeen: new Date()
+    };
+    setDevices(prev => [...prev, newDevice]);
+  };
+
   const updateDeviceControl = (deviceId, controlId, value) => {
-    setDevices(prev =>
-      prev.map(device => {
-        if (device.id === deviceId && device.controls) {
-          return {
-            ...device,
-            controls: device.controls.map(control =>
-              control.id === controlId ? { ...control, value } : control
-            )
-          };
-        }
-        return device;
-      })
-    );
+    setDevices(prev => prev.map(device => {
+      if (device.id === deviceId && device.controls) {
+        return {
+          ...device,
+          controls: device.controls.map(control =>
+            control.id === controlId ? { ...control, value } : control
+          )
+        };
+      }
+      return device;
+    }));
   };
 
   const addWidget = (widget) => {
-    const newWidget = { ...widget, id: Date.now().toString() };
+    const newWidget = { ...widget, id: `widget-${Date.now()}` };
     setWidgets(prev => [...prev, newWidget]);
   };
 
   const updateWidget = (widgetId, updates) => {
-    setWidgets(prev =>
-      prev.map(widget =>
-        widget.id === widgetId ? { ...widget, ...updates } : widget
-      )
-    );
+    setWidgets(prev => prev.map(widget =>
+      widget.id === widgetId ? { ...widget, ...updates } : widget
+    ));
   };
 
   const removeWidget = (widgetId) => {
     setWidgets(prev => prev.filter(widget => widget.id !== widgetId));
   };
 
+  const reorderWidgets = (newWidgets) => {
+    setWidgets(newWidgets);
+  };
+
   const acknowledgeAlert = (alertId) => {
-    setAlerts(prev =>
-      prev.map(alert =>
-        alert.id === alertId ? { ...alert, acknowledged: true } : alert
-      )
-    );
+    setAlerts(prev => prev.map(alert =>
+      alert.id === alertId ? { ...alert, acknowledged: true } : alert
+    ));
   };
 
   const addAutomationRule = (rule) => {
-    const newRule = { ...rule, id: Date.now().toString() };
+    const newRule = { ...rule, id: `rule-${Date.now()}` };
     setAutomationRules(prev => [...prev, newRule]);
   };
 
   const updateAutomationRule = (ruleId, updates) => {
-    setAutomationRules(prev =>
-      prev.map(rule =>
-        rule.id === ruleId ? { ...rule, ...updates } : rule
-      )
-    );
+    setAutomationRules(prev => prev.map(rule =>
+      rule.id === ruleId ? { ...rule, ...updates } : rule
+    ));
   };
 
   const removeAutomationRule = (ruleId) => {
@@ -148,10 +158,13 @@ export const DashboardProvider = ({ children }) => {
       layouts,
       currentLayout,
       updateDevice,
+      removeDevice,
+      addDevice,
       updateDeviceControl,
       addWidget,
       updateWidget,
       removeWidget,
+      reorderWidgets,
       acknowledgeAlert,
       addAutomationRule,
       updateAutomationRule,

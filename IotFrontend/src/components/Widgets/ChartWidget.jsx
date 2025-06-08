@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Line, Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -13,7 +13,7 @@ import {
   Filler
 } from 'chart.js';
 import { useDashboard } from '../../contexts/DashboardContext';
-import { MoreVertical, TrendingUp } from 'lucide-react';
+import { MoreVertical, TrendingUp, X, Settings, GripVertical } from 'lucide-react';
 
 ChartJS.register(
   CategoryScale,
@@ -27,9 +27,10 @@ ChartJS.register(
   Filler
 );
 
-const ChartWidget = ({ widget }) => {
+const ChartWidget = ({ widget, onRemove }) => {
   const { devices } = useDashboard();
   const chartRef = useRef(null);
+  const [showMenu, setShowMenu] = useState(false);
 
   const device = devices.find(d => d.id === widget.deviceId);
   const currentValue = device?.data?.values[widget.dataKey || ''];
@@ -61,10 +62,9 @@ const ChartWidget = ({ widget }) => {
         label: widget.title,
         data,
         borderColor: widget.config.color || '#3B82F6',
-        backgroundColor:
-          widget.config.chartType === 'line'
-            ? `${widget.config.color || '#3B82F6'}20`
-            : widget.config.color || '#3B82F6',
+        backgroundColor: widget.config.chartType === 'line'
+          ? `${widget.config.color || '#3B82F6'}20`
+          : widget.config.color || '#3B82F6',
         fill: widget.config.chartType === 'line',
         tension: 0.4,
         borderWidth: 2,
@@ -112,22 +112,47 @@ const ChartWidget = ({ widget }) => {
   const ChartComponent = widget.config.chartType === 'bar' ? Bar : Line;
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-all duration-200">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-all duration-200 group">
       <div className="flex items-center justify-between mb-4">
-        <div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-            {widget.title}
-          </h3>
-          <div className="flex items-center space-x-2 mt-1">
-            <span className="text-2xl font-bold text-gray-900 dark:text-white">
-              {currentValue?.toFixed(1) || '0.0'}
-            </span>
-            <TrendingUp className="w-4 h-4 text-green-500" />
+        <div className="flex items-center space-x-3">
+          <GripVertical className="w-5 h-5 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity cursor-grab" />
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              {widget.title}
+            </h3>
+            <div className="flex items-center space-x-2 mt-1">
+              <span className="text-2xl font-bold text-gray-900 dark:text-white">
+                {currentValue?.toFixed(1) || '0.0'}
+              </span>
+              <TrendingUp className="w-4 h-4 text-green-500" />
+            </div>
           </div>
         </div>
-        <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-          <MoreVertical className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-        </button>
+
+        <div className="relative">
+          <button
+            onClick={() => setShowMenu(!showMenu)}
+            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+          >
+            <MoreVertical className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+          </button>
+
+          {showMenu && (
+            <div className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-10">
+              <button className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-2">
+                <Settings className="w-4 h-4" />
+                <span>Configure</span>
+              </button>
+              <button
+                onClick={onRemove}
+                className="w-full px-4 py-2 text-left text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center space-x-2"
+              >
+                <X className="w-4 h-4" />
+                <span>Remove</span>
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="h-48">
@@ -137,7 +162,7 @@ const ChartWidget = ({ widget }) => {
       <div className="mt-4 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
         <span>Last 24 hours</span>
         <span className="flex items-center space-x-1">
-          <div className={`w-2 h-2 rounded-full ${device?.status === 'online' ? 'bg-green-500' : 'bg-red-500'}`}></div>
+          <div className={`w-2 h-2 rounded-full ${device?.status === 'online' ? 'bg-green-500' : 'bg-red-500'}`} />
           <span className="capitalize">{device?.status || 'offline'}</span>
         </span>
       </div>
