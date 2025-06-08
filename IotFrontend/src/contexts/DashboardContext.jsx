@@ -28,11 +28,12 @@ export const DashboardProvider = ({ children }) => {
             timestamp: new Date(),
             values: {
               ...device.data?.values,
+              // temperature: 500,
               temperature: Math.round((20 + Math.random() * 15) * 10) / 10,
               humidity: Math.round((40 + Math.random() * 30) * 10) / 10,
-              pressure: Math.round((1013 + (Math.random() - 0.5) * 20) * 10) / 10,
+              // pressure: Math.round((1013 + (Math.random() - 0.5) * 20) * 10) / 10,
               motion: Math.random() > 0.8,
-              power: Math.round((Math.random() * 1000) * 10) / 10,
+              // power: Math.round((Math.random() * 1000) * 10) / 10,
             }
           }
         }))

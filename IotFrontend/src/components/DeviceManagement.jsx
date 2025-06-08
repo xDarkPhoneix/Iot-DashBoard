@@ -90,21 +90,7 @@ const DeviceManagement = () => {
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Device Type
-                </label>
-                <select
-                  value={configDevice.type}
-                  onChange={(e) => setConfigDevice({ ...configDevice, type: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                >
-                  <option value="sensor">Sensor</option>
-                  <option value="actuator">Actuator</option>
-                  <option value="camera">Camera</option>
-                  <option value="controller">Controller</option>
-                </select>
-              </div>
+              {/* c */}
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -292,7 +278,7 @@ const DeviceManagement = () => {
                           {typeof value === 'boolean' 
                             ? (value ? 'True' : 'False')
                             : typeof value === 'number'
-                            ? value.toFixed(1)
+                            ? value.toFixed(2)
                             : String(value)
                           }
                         </span>

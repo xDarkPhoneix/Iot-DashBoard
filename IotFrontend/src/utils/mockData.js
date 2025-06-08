@@ -11,8 +11,8 @@ export const mockDevices = [
       values: {
         temperature: 22.5,
         humidity: 45.2,
-        pressure: 1013.2,
-        light: 350
+        // pressure: 1013.2,
+        // light: 350
       }
     }
   },
@@ -43,9 +43,9 @@ export const mockDevices = [
     data: {
       timestamp: new Date(),
       values: {
-        currentTemp: 21.5,
+        // currentTemp: 21.5,
         targetTemp: 21,
-        power: true
+        // power: true
       }
     }
   },
@@ -60,7 +60,7 @@ export const mockDevices = [
       timestamp: new Date(),
       values: {
         motion: false,
-        battery: 85
+        // battery: 85
       }
     }
   },
