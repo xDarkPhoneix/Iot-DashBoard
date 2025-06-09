@@ -12,18 +12,36 @@ const Dashboard = () => {
   const onlineDevices = devices.filter(d => d.status === 'online').length;
   const totalDevices = devices.length;
   const activeAlerts = alerts.filter(a => !a.acknowledged).length;
-  const socket = io("http://localhost:8000")
+<<<<<<< HEAD
+  // const socket = io("http://localhost:8000")
 
   useEffect(() => {
-    socket.on("sensor-data", (payload) => {
-      console.log("Received:", payload);
-      
-    });
 
-    return () => {
-      socket.off("sensor-data");
-    };
+    console.log(devices);
+    
+    // socket.on("sensor-data", (payload) => {
+    //   console.log("Received:", payload);
+      
+    // });
+
+    // return () => {
+    //   socket.off("sensor-data");
+    // };
   }, []);
+=======
+  //const socket = io("http://localhost:8000")
+
+  // useEffect(() => {
+  //   socket.on("sensor-data", (payload) => {
+  //     console.log("Received:", payload);
+      
+  //   });
+
+  //   return () => {
+  //     socket.off("sensor-data");
+  //   };
+  // }, []);
+>>>>>>> 96ac00555950c26afad7b544b45531626e82beb5
 
   return (
     <div className="p-6 space-y-6">

@@ -212,14 +212,16 @@ export const DashboardProvider = ({ children }) => {
 
   // Fetch initial widgets
   useEffect(() => {
-    // const fetchWidgets = async () => {
-    //   try {
-    //     const response = await axios.get('/api/v1/widgets', { withCredentials: true });
-    //     setWidgets(response.data.data);
-    //   } catch (error) {
-    //     console.error('Failed to fetch widgets:', error);
-    //   }
-    // };
+    const fetchWidgets = async () => {
+      try {
+        const response = await axios.get('/api/v1/dashboard/widgets', { withCredentials: true });
+        console.log(response);
+        
+        setWidgets(response.data.data);
+      } catch (error) {
+        console.error('Failed to fetch widgets:', error);
+      }
+    };
     const fetchDevices = async () => {
       try {
         const response = await axios.post('/api/v1/devices/get', { withCredentials: true });
@@ -231,7 +233,7 @@ export const DashboardProvider = ({ children }) => {
       }
     };
 
-    // fetchWidgets();
+    fetchWidgets();
     fetchDevices();
   }, []);
 
@@ -295,7 +297,7 @@ export const DashboardProvider = ({ children }) => {
 
   const addWidget = async (widget) => {
     try {
-      const response = await axios.post('/api/v1/widgets', widget, {
+      const response = await axios.post('/api/v1/dashboard/addWidgets', widget, {
         withCredentials: true,
       });
       setWidgets(prev => [...prev, response.data.data]);
@@ -306,7 +308,7 @@ export const DashboardProvider = ({ children }) => {
 
   const updateWidget = async (widgetId, updates) => {
     try {
-      const response = await axios.put(`/api/v1/widgets/${widgetId}`, updates, {
+      const response = await axios.put(`/api/v1/dashboard/widgets/${widgetId}`, updates, {
         withCredentials: true,
       });
       setWidgets(prev =>
@@ -321,7 +323,7 @@ export const DashboardProvider = ({ children }) => {
 
   const removeWidget = async (widgetId) => {
     try {
-      await axios.delete(`/api/v1/widgets/${widgetId}`, {
+      await axios.delete(`/api/v1/dashboard/widgets/${widgetId}`, {
         withCredentials: true,
       });
       setWidgets(prev => prev.filter(widget => widget._id !== widgetId));
@@ -333,7 +335,7 @@ export const DashboardProvider = ({ children }) => {
   const reorderWidgets = async (orderedWidgets) => {
     try {
       const widgetOrder = orderedWidgets.map(w => w._id);
-      await axios.post('/api/v1/widgets/reorder', { widgetOrder }, {
+      await axios.post('/api/v1/dashboard/widgets/reorder', { widgetOrder }, {
         withCredentials: true,
       });
       setWidgets(orderedWidgets);

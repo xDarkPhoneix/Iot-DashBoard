@@ -30,7 +30,8 @@ export const createDevice = async (req, res) => {
 
 // Get all devices for the logged-in user
 export const getDevices = async (req, res) => {
-    console.log("hola");
+    
+    
     
   try {
     const devices = await Device.find({ owner: req.user._id });
