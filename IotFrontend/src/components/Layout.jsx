@@ -19,6 +19,7 @@ import Dashboard from './Dashboard';
 import DeviceManagement from './DeviceManagement';
 import AlertsPanel from './AlertsPanel';
 import AutomationPanel from './AutomationPanel';
+import { useEffect } from 'react';
 
 const Layout = () => {
   const { user, logout } = useAuth();
@@ -27,13 +28,18 @@ const Layout = () => {
   const [currentView, setCurrentView] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  useEffect(()=>{
+    console.log(user);
+    
+  },[])
+
   const unacknowledgedAlerts = alerts.filter(alert => !alert.acknowledged).length;
 
   const navigation = [
-    { id: 'dashboard', name: 'Dashboard', icon: LayoutDashboard, permission: ['admin', 'operator', 'viewer'] },
-    { id: 'devices', name: 'Devices', icon: Zap, permission: ['admin', 'operator'] },
-    { id: 'alerts', name: 'Alerts', icon: Bell, permission: ['admin', 'operator', 'viewer'], badge: unacknowledgedAlerts },
-    { id: 'automation', name: 'Automation', icon: Settings, permission: ['admin', 'operator'] },
+    { id: 'dashboard', name: 'Dashboard', icon: LayoutDashboard, permission: ['admin', 'user'] },
+    { id: 'devices', name: 'Devices', icon: Zap, permission: ['admin'] },
+    { id: 'alerts', name: 'Alerts', icon: Bell, permission: ['admin', 'user'], badge: unacknowledgedAlerts },
+    { id: 'automation', name: 'Automation', icon: Settings, permission: ['admin'] },
   ];
 
   const handleExport = () => {
@@ -72,7 +78,7 @@ const Layout = () => {
 
         <nav className="mt-6 px-4 space-y-2">
           {navigation.map((item) => {
-            const hasPermission = user && item.permission.includes(user.role);
+            const hasPermission = user && item.permission.includes(user.role || user.loggedInUser.role);
             if (!hasPermission) return (null);
 
             return (

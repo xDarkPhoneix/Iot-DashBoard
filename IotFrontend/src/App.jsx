@@ -6,8 +6,10 @@ import Login from './components/Login';
 import Layout from './components/Layout';
 import AuthForm from './components/AuthForm';
 
+
 const AppContent = () => {
   const { user, isLoading } = useAuth();
+   
 
   if (isLoading) {
     return (
