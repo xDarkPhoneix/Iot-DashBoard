@@ -18,7 +18,7 @@ const WidgetGrid = () => {
   // Dynamically calculate layout
   const layout = widgets.map((widget, index) => ({
     i: widget.id,
-    x: (index % 4) * 6,
+    x: (index % 4) * 5.6,
     y: Math.floor(index / 4) * 8,
     w: 5,
     h: 10,
