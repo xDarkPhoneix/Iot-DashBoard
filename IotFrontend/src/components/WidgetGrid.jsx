@@ -105,7 +105,7 @@ const WidgetGrid = () => {
             isResizable
           >
             {widgets.map((widget) => (
-              <div key={widget.id} className="widget-drag-handle">
+              <div key={widget._id} className="widget-drag-handle">
                 {renderWidget(widget)}
               </div>
             ))}
