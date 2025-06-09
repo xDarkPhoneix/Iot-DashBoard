@@ -220,8 +220,17 @@ export const DashboardProvider = ({ children }) => {
         console.error('Failed to fetch widgets:', error);
       }
     };
+    const fetchDevices = async () => {
+      try {
+        const response = await axios.get('/api/v1/getDevices', { withCredentials: true });
+        setDevices(response.data.data);
+      } catch (error) {
+        console.error('Failed to fetch widgets:', error);
+      }
+    };
 
     fetchWidgets();
+    fetchDevices();
   }, []);
 
   // Simulate periodic device data updates

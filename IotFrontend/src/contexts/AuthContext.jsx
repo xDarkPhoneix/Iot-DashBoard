@@ -123,7 +123,7 @@ export const AuthProvider = ({ children }) => {
       const response = await axios.post(
         '/api/v1/users/login',
         { email, password },
-        { withCredentials: true },config
+        { withCredentials: true }
       );
       setUser(response.data.data);
       setIsLoading(false);
@@ -145,7 +145,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await axios.post(
         '/api/v1/users/register',
-        { name: fullName, email, password, role },
+        { fullname: fullName, email, password, role },
         { withCredentials: true }
       );
       setUser(response.data.data);
