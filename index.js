@@ -1,81 +1,88 @@
-// import express from "express"
-// import { SerialPort, ReadlineParser } from "serialport"
-// import bodyParser from "body-parser";
+import express from "express"
+import { SerialPort, ReadlineParser } from "serialport"
+import bodyParser from "body-parser";
 
 
-// const app=express()
+const app=express()
 
-// const PORT=8000;
-// app.use(bodyParser.json());
-
-
-
+const PORT=8000;
+app.use(bodyParser.json());
 
 
 
+// Set up Serial connection to HC-05 Bluetooth module
+const bluetoothPort = new SerialPort({
+  path: '/dev/rfcomm0', // Linux usually maps Bluetooth to /dev/rfcomm0
+  baudRate: 9600,
+});
 
-// // Set up Serial connection to HC-05 Bluetooth module
-// const bluetoothPort = new SerialPort({
-//   path: '/dev/rfcomm0', // Linux usually maps Bluetooth to /dev/rfcomm0
-//   baudRate: 9600,
-// });
+bluetoothPort.on('open', () => {
+  console.log("Bluetooth connection established.");
+});
 
-// bluetoothPort.on('open', () => {
-//   console.log("Bluetooth connection established.");
-// });
+bluetoothPort.on('error', (err) => {
+  console.error("Bluetooth error:", err.message);
+});
 
-// bluetoothPort.on('error', (err) => {
-//   console.error("Bluetooth error:", err.message);
-// });
+// API endpoint to control LED via Bluetooth
+app.post("/api/v1/led", (req, res) => {
 
-// // API endpoint to control LED via Bluetooth
-// app.post("/api/v1/led", (req, res) => {
-//   const { state } = req.body;
+  let commandToSend = null;
+let responseMessage = null;
 
-//   if (state === "on") {
-//     bluetoothPort.write("1", (err) => {
-//       if (err) return res.status(500).json({ error: "Failed to send ON" });
-//       res.json({ message: "LED ON command sent" });
-//     });
-//   } else if (state === "off") {
-//     bluetoothPort.write("0", (err) => {
-//       if (err) return res.status(500).json({ error: "Failed to send OFF" });
-//       res.json({ message: "LED OFF command sent" });
-//     });
-//   } else {
-//     res.status(400).json({ error: "Invalid state. Use 'on' or 'off'" });
-//   }
-// });
+// Determine which command to send
+if (TempState === "on" && PressureState === "on") {
+  commandToSend = "X";
+  responseMessage = "Temp + Pressure command sent";
+}else if (TempState === "on" && PressureState === "off") {
+  commandToSend = "t";
+  responseMessage = "Temp command sent";
+} else if (PressureState === "on" && TempState === "off") {
+  commandToSend = "p";
+  responseMessage = "Pressure command sent";
+} else if (TempState === "off" && PressureState === "off") {
+  commandToSend = "x";
+  responseMessage = "All sensors turned OFF";
+} 
+ else {
+  return res.status(400).json({ message: "Invalid state combination" });
+}
 
+// Send command over Bluetooth
+bluetoothPort.write(commandToSend, (err) => {
+  if (err) {
+    return res.status(500).json({ error: "Failed to send command" });
+  }
 
-// const port = new SerialPort({
-//   path: '/dev/ttyUSB0', // Use your correct port (COMx on Windows, ttyUSBx on Linux)
-//   baudRate: 9600,
-// });
+  // Only wait for data if it's an ON command
+  if (["t", "p", "X"].includes(commandToSend)) {
+    parser.on("data", (data) => {
+      console.log("Sensor Data:", data);
+      // You can send this in the response if needed:
+      // return res.json({ message: responseMessage, data });
+    });
+  }
 
-// const parser = port.pipe(new ReadlineParser({ delimiter: '\n' }));
+})
 
-// let sensorData = "0";
-
-// parser.on('data', (data) => {
-//   console.log("Sensor:", data.trim());
-//   sensorData = data.trim();
-// });
-
-// app.get('/api/v1/ir', (req, res) => {
-//   res.json({ irValue: sensorData });
-// });
-
-// app.get("/",(req,res)=>{
-//     res.send("Server is ready")
-// })
-
-// app.post("/api/v1/post",(req,res)=>{
-//     res.json("Hola is ready")
-// })
+})
 
 
 
-// app.listen(PORT, () => {
-//   console.log(`Server running on http://localhost:${PORT}`);
-// });
+app.get('/api/v1/ir', (req, res) => {
+  res.json({ irValue: sensorData });
+});
+
+app.get("/",(req,res)=>{
+    res.send("Server is ready")
+})
+
+app.post("/api/v1/post",(req,res)=>{
+    res.json("Hola is ready")
+})
+
+
+
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
