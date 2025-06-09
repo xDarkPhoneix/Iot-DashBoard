@@ -104,6 +104,10 @@ export const DashboardProvider = ({ children }) => {
     ));
   };
 
+  const removeAlert = (id) => {
+  setAlerts(prev => prev.filter(alert => alert.id !== id));
+};
+
   const addAutomationRule = (rule) => {
     const newRule = { ...rule, id: `rule-${Date.now()}` };
     setAutomationRules(prev => [...prev, newRule]);
@@ -167,6 +171,7 @@ export const DashboardProvider = ({ children }) => {
       removeWidget,
       reorderWidgets,
       acknowledgeAlert,
+      removeAlert,
       addAutomationRule,
       updateAutomationRule,
       removeAutomationRule,

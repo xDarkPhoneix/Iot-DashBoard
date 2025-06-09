@@ -4,7 +4,7 @@ import { AlertTriangle, Info, X, Check, Clock } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
 const AlertsPanel = () => {
-  const { alerts, acknowledgeAlert } = useDashboard();
+  const { alerts, acknowledgeAlert, removeAlert } = useDashboard();
 
   const getAlertIcon = (type) => {
     switch (type) {
@@ -113,8 +113,11 @@ const AlertsPanel = () => {
                     <Check className="w-4 h-4" />
                     <span>Acknowledge</span>
                   </button>
-                  <button className="p-2 hover:bg-white/50 dark:hover:bg-gray-800/50 rounded-lg transition-colors">
-                    <X className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                  <button
+                    onClick={() => removeAlert(alert.id)}
+                    className="p-2 hover:bg-white/50 dark:hover:bg-gray-800/50 rounded-lg transition-colors"
+                  >
+                  <X className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                   </button>
                 </div>
               </div>
