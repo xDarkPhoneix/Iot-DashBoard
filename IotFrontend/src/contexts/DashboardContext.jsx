@@ -38,7 +38,7 @@ export const DashboardProvider = ({ children }) => {
           }
         }))
       );
-    }, 2000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);

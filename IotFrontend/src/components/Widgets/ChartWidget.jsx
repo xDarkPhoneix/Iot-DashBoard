@@ -43,11 +43,14 @@ const ChartWidget = ({ widget, onRemove }) => {
     for (let i = 23; i >= 0; i--) {
       const time = new Date(now.getTime() - i * 60 * 60 * 1000);
       labels.push(time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+    
 
-      const baseValue = currentValue || 20;
-      const variance = baseValue * 0.1;
-      const value = baseValue + (Math.random() - 0.5) * variance;
-      data.push(Math.round(value * 10) / 10);
+      // const baseValue = currentValue || 20;
+      // const variance = baseValue * 0.1;
+      // const value = baseValue + (Math.random() - 0.5) * variance;
+      // data.push(Math.round(value * 10) / 10);
+      data.push(9,8,6,8)
+
     }
 
     return { labels, data };

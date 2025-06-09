@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useDashboard } from '../contexts/DashboardContext';
-import { Zap, Wifi, WifiOff, MapPin, Clock, Settings, Trash2, Plus, X, Save } from 'lucide-react';
+import { Zap, Bluetooth, WifiOff, MapPin, Clock, Settings, Trash2, Plus, X, Save, BluetoothOff } from 'lucide-react';
 
 const DeviceManagement = () => {
   const { devices, updateDevice, removeDevice, addDevice } = useDashboard();
@@ -13,11 +13,11 @@ const DeviceManagement = () => {
   const getStatusIcon = (status) => {
     switch (status) {
       case 'online':
-        return <Wifi className="w-5 h-5 text-green-500" />;
+        return <Bluetooth className="w-5 h-5 text-green-500" />;
       case 'offline':
-        return <WifiOff className="w-5 h-5 text-red-500" />;
+        return <BluetoothOff className="w-5 h-5 text-red-500" />;
       default:
-        return <WifiOff className="w-5 h-5 text-yellow-500" />;
+        return <BluetoothOff className="w-5 h-5 text-yellow-500" />;
     }
   };
 

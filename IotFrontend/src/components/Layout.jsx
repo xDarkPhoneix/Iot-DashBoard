@@ -73,7 +73,7 @@ const Layout = () => {
         <nav className="mt-6 px-4 space-y-2">
           {navigation.map((item) => {
             const hasPermission = user && item.permission.includes(user.role);
-            if (!hasPermission) return null;
+            if (!hasPermission) return (null);
 
             return (
               <button
@@ -147,7 +147,9 @@ const Layout = () => {
           <div className="flex items-center space-x-4">
             {unacknowledgedAlerts > 0 && (
               <div className="relative">
-                <Bell className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                <button onClick={() => setCurrentView('alerts')}>
+                  <Bell className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                </button>
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
                   {unacknowledgedAlerts}
                 </span>
