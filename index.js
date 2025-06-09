@@ -28,15 +28,15 @@ const server = app.listen(process.env.PORT, () => {
 });
 
 const io = new Server(server, {
-   pingTimeout:60000,
+  pingTimeout:60000,
   cors: {
     origin: "*", // Allow frontend origin
   },
 });
 
-io.on("connection", (socket) => {
-  console.log("Client connected:", socket.id);
-});
+// io.on("connection", (socket) => {
+//   console.log("Client connected:", socket.id);
+// });
 
 app.get("/api/v1/ir", (req, res) => {
   res.json({ irValue: sensorData });
@@ -110,7 +110,7 @@ app.post("/api/v1/led", (req, res) => {
           const json = JSON.parse(data);
           console.log("Temp:", json.temperature);
           console.log("Humidity:", json.humidity);
-          io.emit("sensor-data", json);
+        //  io.emit("sensor-data", json);
         } catch (err) {
           console.error("Invalid JSON:", data);
         }

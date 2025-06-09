@@ -117,13 +117,17 @@ export const AuthProvider = ({ children }) => {
     console.log("HOLA");
     console.log(email,password);
     
-    
+      const config = {
+          headers: {
+            "Content-type": "application/json",
+          },
+        };
     setIsLoading(true);
     try {
       const response = await axios.post(
         `${url}/api/v1/users/login`,
         { email, password },
-        { withCredentials: true }
+        { withCredentials: true },config
       );
       setUser(response.data.data);
       setIsLoading(false);
