@@ -1,5 +1,5 @@
-import SensorData from '../models/sensorDataModel.js';
-import Device from '../models/deviceModel.js';
+import SensorData from '../models/sensor.model.js';
+import Device from '../models/device.model.js';
 
 // Create new sensor data (e.g., from a device or external ingestion service)
 export const createSensorData = async (req, res) => {

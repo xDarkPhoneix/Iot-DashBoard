@@ -11,7 +11,7 @@ const app = express();
 dotenv.config();
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: "http://localhost:5173",
     credential: true,
   })
 );
@@ -50,6 +50,11 @@ app.post("/api/v1/post", (req, res) => {
   res.json("Hola is ready");
 });
 
+import DashboardRoutes from './src/routes/dashboard.routes.js'
+app.use("/api/v1/dashboard", DashboardRoutes);
+
+import AutomationRoutes from "./src/routes/automation.routes.js";
+app.use("/api/v1/automation", AutomationRoutes);
 //Device Routes
 import DeviceRoutes from "./src/routes/device.routes.js";
 app.use("/api/v1/devices", DeviceRoutes);

@@ -1,7 +1,7 @@
-import AutomationRule from '../models/AutomationRule.js';
-import ApiError from '../utils/ApiError.js';
-import ApiResponse from '../utils/ApiResponse.js';
-import asyncHandler from '../utils/asyncHandler.js';
+import AutomationRule from '../models/automation.model.js';
+import {ApiError} from '../utils/ApiError.js';
+import {ApiResponse} from '../utils/ApiResponse.js';
+import {asyncHandler} from '../utils/asyncHandler.js';
 
 
 export const getAllRules = asyncHandler(async (req, res) => {

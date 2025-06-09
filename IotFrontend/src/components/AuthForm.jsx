@@ -1,30 +1,36 @@
 import React, { useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 import { Shield, Eye, EyeOff, User, Mail, Lock, LogIn, UserPlus } from 'lucide-react';
 
 const AuthForm = () => {
+  const { login, register } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     password: '',
-    role: 'user'
+    role: 'user',
   });
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMsg('');
     if (isLogin) {
-      console.log('Login attempt:', { email: formData.email, password: formData.password });
+      const result = await login(formData.email, formData.password);
+      if (!result.success) setErrorMsg(result.message);
     } else {
-      console.log('Registration attempt:', formData);
+      const result = await register(formData);
+      if (!result.success) setErrorMsg(result.message);
     }
   };
 
@@ -34,8 +40,9 @@ const AuthForm = () => {
       fullName: '',
       email: '',
       password: '',
-      role: 'user'
+      role: 'user',
     });
+    setErrorMsg('');
   };
 
   return (
@@ -51,16 +58,26 @@ const AuthForm = () => {
               {isLogin ? 'IoT Dashboard' : 'Create Account'}
             </h1>
             <p className="text-slate-400 text-sm">
-              {isLogin ? 'Secure monitoring and control' : 'Join our secure platform'}
+              {isLogin
+                ? 'Secure monitoring and control'
+                : 'Join our secure platform'}
             </p>
           </div>
+
+          {/* Error message */}
+          {errorMsg && (
+            <p className="text-red-500 text-center mb-4 font-medium">{errorMsg}</p>
+          )}
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Full Name - Registration Only */}
             {!isLogin && (
               <div>
-                <label htmlFor="fullName" className="block text-sm font-medium text-slate-300 mb-2">
+                <label
+                  htmlFor="fullName"
+                  className="block text-sm font-medium text-slate-300 mb-2"
+                >
                   Full Name
                 </label>
                 <div className="relative">
@@ -81,7 +98,10 @@ const AuthForm = () => {
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-slate-300 mb-2"
+              >
                 Email Address
               </label>
               <div className="relative">
@@ -101,7 +121,10 @@ const AuthForm = () => {
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-300 mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-slate-300 mb-2"
+              >
                 Password
               </label>
               <div className="relative">
@@ -121,7 +144,11 @@ const AuthForm = () => {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-300 transition-colors duration-200"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
                 </button>
               </div>
             </div>
@@ -129,7 +156,10 @@ const AuthForm = () => {
             {/* Role Selection - Registration Only */}
             {!isLogin && (
               <div>
-                <label htmlFor="role" className="block text-sm font-medium text-slate-300 mb-2">
+                <label
+                  htmlFor="role"
+                  className="block text-sm font-medium text-slate-300 mb-2"
+                >
                   Account Type
                 </label>
                 <select
@@ -167,7 +197,7 @@ const AuthForm = () => {
           {/* Toggle Link */}
           <div className="mt-6 text-center">
             <p className="text-slate-400 text-sm">
-              {isLogin ? "Don't have an account? " : "Already have an account? "}
+              {isLogin ? "Don't have an account? " : 'Already have an account? '}
               <button
                 type="button"
                 onClick={toggleAuthMode}
@@ -181,9 +211,7 @@ const AuthForm = () => {
 
         {/* Footer */}
         <div className="text-center mt-8">
-          <p className="text-slate-500 text-xs">
-            Secure • Encrypted • Trusted
-          </p>
+          <p className="text-slate-500 text-xs">Secure • Encrypted • Trusted</p>
         </div>
       </div>
     </div>

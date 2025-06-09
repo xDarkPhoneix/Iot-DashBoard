@@ -3,7 +3,7 @@ import { verifyJWT } from '../middlewares/auth.middleware.js';
 import {
   validateAutomationRule,
   validateObjectId
-} from '../validators/validation.js';
+} from '../middlewares/validation.middleware.js';
 import {
   getAllRules,
   createRule,
