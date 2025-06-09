@@ -2,10 +2,12 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import { Dashboard } from "../models/dashBoard.model.js";
+import { Widget } from "../models/dashBoard.model.js";
 
 
 const getAllWidgets = asyncHandler(async (req, res) => {
-  const widgets = await Dashboard.find({ user: req.user._id });
+  const widgets = await Widget.find({ owner: req.user._id });
+console.log(widgets);
 
   return res
     .status(200)
@@ -46,7 +48,7 @@ const updateWidget = asyncHandler(async (req, res) => {
   const { widgetId } = req.params;
   const { config } = req.body;
 
-  const updatedWidget = await Dashboard.findOneAndUpdate(
+  const updatedWidget = await Widget.findOneAndUpdate(
     { _id: widgetId, user: req.user._id },
     { $set: { config } },
     { new: true }
@@ -65,7 +67,7 @@ const updateWidget = asyncHandler(async (req, res) => {
 const deleteWidget = asyncHandler(async (req, res) => {
   const { widgetId } = req.params;
 
-  const deletedWidget = await Dashboard.findOneAndDelete({
+  const deletedWidget = await Widget.findOneAndDelete({
     _id: widgetId,
     user: req.user._id,
   });
@@ -87,12 +89,22 @@ const reorderWidgets = asyncHandler(async (req, res) => {
     throw new ApiError(400, "widgetOrder must be an array of widget IDs");
   }
 
-  const widgets = await Dashboard.find({ user: req.user._id });
+  // Fetch existing widgets of the user
+  const userWidgets = await Widget.find({ owner: req.user._id }).select('_id');
 
-  const updated = await Promise.all(
+  const validWidgetIds = new Set(userWidgets.map((widget) => String(widget._id)));
+
+  const invalidIds = widgetOrder.filter((id) => !validWidgetIds.has(String(id)));
+
+  if (invalidIds.length > 0) {
+    throw new ApiError(400, `Invalid widget IDs: ${invalidIds.join(', ')}`);
+  }
+
+  // Update positions
+  const updates = await Promise.all(
     widgetOrder.map((id, index) =>
-      Dashboard.findOneAndUpdate(
-        { _id: id, user: req.user._id },
+      Widget.findOneAndUpdate(
+        { _id: id, owner: req.user._id },
         { $set: { position: index } },
         { new: true }
       )
@@ -101,8 +113,9 @@ const reorderWidgets = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, updated, "Widget order updated"));
+    .json(new ApiResponse(200, updates, "Widget order updated successfully"));
 });
+
 
 export {
   getAllWidgets,

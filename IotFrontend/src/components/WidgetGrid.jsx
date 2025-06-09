@@ -15,21 +15,20 @@ const WidgetGrid = () => {
   const { widgets, reorderWidgets, removeWidget } = useDashboard();
   const [showAddWidget, setShowAddWidget] = useState(false);
 
-  // Dynamically calculate layout
   const layout = widgets.map((widget, index) => ({
-    i: widget.id,
-    x: (index % 4) * 5.6,
-    y: Math.floor(index / 4) * 8,
-    w: 5,
+    i: widget._id, // use _id consistently
+    x: (index % 4) * 6,
+    y: Math.floor(index / 4) * 10,
+    w: 6,
     h: 10,
-    minW: 4,
-    minH: 5,
+    minW: 5,
+    minH: 7,
   }));
 
   const handleLayoutChange = useCallback(
     (newLayout) => {
       const sortedLayout = [...newLayout].sort((a, b) => (a.y * 100 + a.x) - (b.y * 100 + b.x));
-      const newOrder = sortedLayout.map((item) => widgets.find((w) => w.id === item.i));
+      const newOrder = sortedLayout.map((item) => widgets.find((w) => w._id === item.i));
       reorderWidgets(newOrder);
     },
     [widgets, reorderWidgets]
@@ -38,7 +37,7 @@ const WidgetGrid = () => {
   const renderWidget = (widget) => {
     const commonProps = {
       widget,
-      onRemove: () => removeWidget(widget.id),
+      onRemove: () => removeWidget(widget._id),
     };
     switch (widget.type) {
       case 'chart':
@@ -73,7 +72,7 @@ const WidgetGrid = () => {
       </div>
 
       {/* Widget Grid */}
-      <div className="p-4 rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 bg-transparent overflow-x-auto w-full">
+      <div className="p-4 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-700 bg-transparent overflow-x-auto w-full">
         {widgets.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-gray-500 dark:text-gray-400">
             <Grid3X3 className="w-12 h-12 mb-4 opacity-50" />
@@ -105,8 +104,14 @@ const WidgetGrid = () => {
             isResizable
           >
             {widgets.map((widget) => (
-              <div key={widget.id} className="widget-drag-handle">
-                {renderWidget(widget)}
+              <div
+                key={widget._id}
+                className="widget-drag-handle"
+                style={{ minHeight: '220px', minWidth: '200px' }} // fallback min size
+              >
+                <div className="h-full w-full bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+                  {renderWidget(widget)}
+                </div>
               </div>
             ))}
           </GridLayout>

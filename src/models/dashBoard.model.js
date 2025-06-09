@@ -49,5 +49,5 @@ const dashboardSchema = new Schema({
 // Indexes
 dashboardSchema.index({ owner: 1, isActive: 1 });
 dashboardSchema.index({ 'widgets.id': 1 });
-
+export const Widget = mongoose.model('Widget',widgetSchema)
 export const Dashboard = mongoose.model('Dashboard', dashboardSchema);

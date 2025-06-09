@@ -46,7 +46,7 @@ const AddWidgetModal = ({ isOpen, onClose }) => {
     }
   ];
 
-  const selectedDeviceObj = devices.find(d => d.id === selectedDevice);
+  const selectedDeviceObj = devices.find(d => d._id === selectedDevice);
   const availableDataKeys = selectedDeviceObj?.data?.values ? Object.keys(selectedDeviceObj.data.values) : [];
 
   const handleSubmit = (e) => {
@@ -157,8 +157,8 @@ const AddWidgetModal = ({ isOpen, onClose }) => {
               >
                 <option value="">Select a device</option>
                 {devices.map((device) => (
-                  <option key={device.id} value={device.id}>
-                    {device.name} ({device.location})
+                  <option key={device._id} value={device._id}>
+                    {device.name} 
                   </option>
                 ))}
               </select>
