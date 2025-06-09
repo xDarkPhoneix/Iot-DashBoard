@@ -13,11 +13,6 @@ const deviceSchema = new mongoose.Schema({
     trim: true,
     maxlength: 100
   },
-  type: {
-    type: String,
-    required: true,
-    enum: ['sensor', 'actuator', 'gateway', 'controller'],
-  },
   category: {
     type: String,
     enum: ['temperature', 'humidity', 'pressure', 'motion', 'light', 'air_quality', 'water', 'energy', 'security', 'other'],
@@ -48,13 +43,6 @@ const deviceSchema = new mongoose.Schema({
       offset: { type: Number, default: 0 },
       scale: { type: Number, default: 1 }
     }
-  },
-  metadata: {
-    manufacturer: String,
-    model: String,
-    firmware: String,
-    installDate: Date,
-    lastMaintenance: Date
   },
   isActive: {
     type: Boolean,

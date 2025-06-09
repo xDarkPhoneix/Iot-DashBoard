@@ -1,10 +1,32 @@
-import Device from '../models/deviceModel.js';
+import Device from '../models/device.model.js'
+import { ApiError } from '../utils/ApiError.js';
 
 // Create a new device
 export const createDevice = async (req, res) => {
   try {
-    const device = new Device({ ...req.body, owner: req.user._id });
-    await device.save();
+
+    
+
+    const device = {...req.body};
+    const owner=req.user._id
+
+    if(!owner){
+        throw new ApiError(400,"User Not Authorised")
+    }
+
+    const deviceData=await Device.create({
+        ...device,
+        owner
+    })
+
+    if(!deviceData){
+         throw new ApiError(400,"Failed to create Device Data")
+
+    }
+    
+    //  owner: req.user._id
+
+    
     res.status(201).json(device);
   } catch (err) {
     res.status(400).json({ error: err.message });

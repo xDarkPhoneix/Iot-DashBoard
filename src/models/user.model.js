@@ -4,14 +4,6 @@ import bcrypt from "bcrypt";
 
 
 const userSchema = new Schema({
-    // username: {
-    //     type: String,
-    //     required: true,
-    //     unique: false,
-    //     lowercase: true,
-    //     trim: true,
-    //     index: true,
-    // },
     email: {
         type: String,
         required: true,
@@ -28,12 +20,17 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: [true,"password is required"],
-        minlength: 8,
+        
         // select: false,
     },
     refreshToken:{
         type: String,
-    }
+    },
+    role: {
+    type: String,
+    enum: ['admin', 'viewer'],
+    default: 'viewer'
+  },
 
 },{timestamps: true})
 
