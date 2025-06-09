@@ -297,7 +297,7 @@ export const DashboardProvider = ({ children }) => {
 
   const addWidget = async (widget) => {
     try {
-      const response = await axios.post('/api/v1/dashboard/addWidgets', widget, {
+      const response = await axios.post('/api/v1/dashboard/addWidget', widget, {
         withCredentials: true,
       });
       setWidgets(prev => [...prev, response.data.data]);
@@ -334,10 +334,16 @@ export const DashboardProvider = ({ children }) => {
 
   const reorderWidgets = async (orderedWidgets) => {
     try {
+      console.log(orderedWidgets);
+      
       const widgetOrder = orderedWidgets.map(w => w._id);
-      await axios.post('/api/v1/dashboard/widgets/reorder', { widgetOrder }, {
+      console.log(widgetOrder);
+      
+    const response =  await axios.post('/api/v1/dashboard/widgets/reorder', { widgetOrder }, {
         withCredentials: true,
       });
+      console.log("aaa",response);
+      
       setWidgets(orderedWidgets);
     } catch (error) {
       console.error('Failed to reorder widgets:', error);

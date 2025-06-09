@@ -49,7 +49,7 @@ const AddWidgetModal = ({ isOpen, onClose }) => {
     }
   ];
 
-  const selectedDeviceObj = devices.find(d => d.id === selectedDevice);
+  const selectedDeviceObj = devices.find(d => d._id === selectedDevice);
   const availableDataKeys = selectedDeviceObj?.data?.values ? Object.keys(selectedDeviceObj.data.values) : [];
 
   const handleSubmit = (e) => {

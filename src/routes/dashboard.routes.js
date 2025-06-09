@@ -20,12 +20,12 @@ router.get('/widgets', getAllWidgets);
 router.post('/addWidget', addWidget);
 
 // PUT update a widget config
-router.put('widgets/:widgetId', updateWidget);
+router.put('/widgets/:widgetId', updateWidget);
 
 // DELETE a widget by id
-router.delete('widgets/:widgetId', deleteWidget);
+router.delete('/widgets/:widgetId', deleteWidget);
 
 // POST reorder widgets (array of widget IDs)
-router.post('widgets/reorder', reorderWidgets);
+router.post('/widgets/reorder', reorderWidgets);
 
 export default router;
