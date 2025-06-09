@@ -28,8 +28,6 @@ const userSchema = new Schema({
     },
     role: {
     type: String,
-    enum: ['admin', 'viewer'],
-    default: 'viewer'
   },
 
 },{timestamps: true})

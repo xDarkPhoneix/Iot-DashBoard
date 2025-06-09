@@ -114,12 +114,16 @@ export const AuthProvider = ({ children }) => {
 
   // Login function
   const login = async (email, password) => {
+    console.log("HOLA");
+    console.log(email,password);
+    
+    
     setIsLoading(true);
     try {
       const response = await axios.post(
         '/api/v1/users/login',
         { email, password },
-        { withCredentials: true }
+        { withCredentials: true },config
       );
       setUser(response.data.data);
       setIsLoading(false);
