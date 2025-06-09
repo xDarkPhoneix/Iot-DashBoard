@@ -212,20 +212,20 @@ export const DashboardProvider = ({ children }) => {
 
   // Fetch initial widgets
   useEffect(() => {
-    const fetchWidgets = async () => {
-      try {
-        const response = await axios.get('/api/v1/dashboard/widgets', { withCredentials: true });
-        console.log(response);
+    // const fetchWidgets = async () => {
+    //   try {
+    //     const response = await axios.get('/api/v1/dashboard/widgets', { withCredentials: true });
+    //     console.log(response);
         
-        setWidgets(response.data.data);
-      } catch (error) {
-        console.error('Failed to fetch widgets:', error);
-      }
-    };
+    //     setWidgets(response.data.data);
+    //   } catch (error) {
+    //     console.error('Failed to fetch widgets:', error);
+    //   }
+    // };
     const fetchDevices = async () => {
       try {
         const response = await axios.post('/api/v1/devices/get', { withCredentials: true });
-        console.log(response);
+        console.log(response.data);
         
        setDevices(response.data);
       } catch (error) {
@@ -233,7 +233,7 @@ export const DashboardProvider = ({ children }) => {
       }
     };
 
-    fetchWidgets();
+    //fetchWidgets();
     fetchDevices();
   }, []);
 
@@ -297,7 +297,7 @@ export const DashboardProvider = ({ children }) => {
 
   const addWidget = async (widget) => {
     try {
-      const response = await axios.post('/api/v1/dashboard/addWidgets', widget, {
+      const response = await axios.post('/api/v1/dashboard/addWidget', widget, {
         withCredentials: true,
       });
       setWidgets(prev => [...prev, response.data.data]);
@@ -334,10 +334,16 @@ export const DashboardProvider = ({ children }) => {
 
   const reorderWidgets = async (orderedWidgets) => {
     try {
+      console.log(orderedWidgets);
+      
       const widgetOrder = orderedWidgets.map(w => w._id);
-      await axios.post('/api/v1/dashboard/widgets/reorder', { widgetOrder }, {
+      console.log(widgetOrder);
+      
+    const response =  await axios.post('/api/v1/dashboard/widgets/reorder', { widgetOrder }, {
         withCredentials: true,
       });
+      console.log("aaa",response);
+      
       setWidgets(orderedWidgets);
     } catch (error) {
       console.error('Failed to reorder widgets:', error);

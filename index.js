@@ -53,6 +53,7 @@ app.post("/api/v1/post", (req, res) => {
 import DashboardRoutes from './src/routes/dashboard.routes.js'
 app.use("/api/v1/dashboard", DashboardRoutes);
 
+
 import AutomationRoutes from "./src/routes/automation.routes.js";
 app.use("/api/v1/automation", AutomationRoutes);
 //Device Routes

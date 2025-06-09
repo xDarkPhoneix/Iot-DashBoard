@@ -24,13 +24,7 @@ const deviceSchema = new mongoose.Schema({
     default: 'offline'
   },
   location: {
-    building: String,
-    floor: String,
-    room: String,
-    coordinates: {
-      lat: Number,
-      lng: Number
-    }
+    type:String
   },
   configuration: {
     samplingRate: { type: Number, default: 60 }, // seconds
