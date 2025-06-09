@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 // Widget Sub-Schema
@@ -50,4 +50,4 @@ const dashboardSchema = new Schema({
 dashboardSchema.index({ owner: 1, isActive: 1 });
 dashboardSchema.index({ 'widgets.id': 1 });
 
-module.exports = mongoose.model('Dashboard', dashboardSchema);
+export const Dashboard = mongoose.model('Dashboard', dashboardSchema);

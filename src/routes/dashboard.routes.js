@@ -6,13 +6,13 @@ import {
   deleteWidget,
   reorderWidgets,
 } from '../controllers/dashBoard.controller.js';
-import { verifyToken } from '../middlewares/auth.middleware.js'; // your auth middleware
+import { verifyJWT } from '../middlewares/auth.middleware.js'; // your auth middleware
 import { body, param } from 'express-validator';
 import { handleValidationErrors } from '../middlewares/validation.middleware.js';
 
 const router = express.Router();
 
-router.use(verifyToken); // Protect all routes with auth
+router.use(verifyJWT); // Protect all routes with auth
 
 // GET all widgets for current user
 router.get('/', getAllWidgets);

@@ -4,6 +4,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { DashboardProvider } from './contexts/DashboardContext';
 import Login from './components/Login';
 import Layout from './components/Layout';
+import AuthForm from './components/AuthForm';
 
 const AppContent = () => {
   const { user, isLoading } = useAuth();
@@ -19,7 +20,7 @@ const AppContent = () => {
     );
   }
 
-  return user ? <Layout /> : <Login />;
+  return user ? <Layout /> : <AuthForm />;
 };
 
 function App() {

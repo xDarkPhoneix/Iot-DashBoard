@@ -1,93 +1,76 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from 'mongoose';
 
-const automationSchema = new Schema({
+const triggerSchema = new mongoose.Schema({
+  deviceId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Device',
+    required: true
+  },
+  dataKey: {
+    type: String,
+    required: true
+  },
+  condition: {
+    type: String,
+    enum: ['greater', 'less', 'equal', 'not_equal'],
+    required: true
+  },
+  value: {
+    type: mongoose.Schema.Types.Mixed,
+    required: true
+  }
+}, { _id: false });
 
-    name: {
-        type: String,
-        required: true,
-        trim: true,
-        maxlength: 100
-    },
-    description: {
-        type: String,
-        trim: true,
-        maxlength: 500
-    },
-    isActive: {
-        type: Boolean,
-        default: true
-    },
-    conditions: [{
-        deviceId: {
-            type: String,
-            required: true
-        },
-        parameter: {
-            type: String,
-            required: true
-        },
-        operator: {
-            type: String,
-            enum: ['>', '<', '>=', '<=', '==', '!=', 'contains', 'not_contains'],
-            required: true
-        },
-        value: {
-            type: mongoose.Schema.Types.Mixed,
-            required: true
-        },
-        logicalOperator: {
-            type: String,
-            enum: ['AND', 'OR'],
-            default: 'AND'
-        }
-    }],
-    actions: [{
-        type: {
-            type: String,
-            enum: ['email', 'sms', 'webhook', 'device_command', 'notification'],
-            required: true
-        },
-        target: {
-            type: String,
-            required: true
-        },
-        payload: {
-            type: mongoose.Schema.Types.Mixed,
-            default: {}
-        },
-        delay: {
-            type: Number,
-            default: 0
-        }
-    }],
-    schedule: {
-        enabled: {
-            type: Boolean,
-            default: false
-        },
-        startTime: String,
-        endTime: String,
-        days: [{
-            type: String,
-            enum: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-        }]
-    },
-    cooldown: {
-        type: Number,
-        default: 300 // 5 minutes in seconds
-    },
-    lastTriggered: Date,
-    triggerCount: {
-        type: Number,
-        default: 0
-    },
-    owner: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    }
+const actionSchema = new mongoose.Schema({
+  type: {
+    type: String,
+    enum: ['alert', 'control', 'email', 'webhook'],
+    required: true
+  },
+  config: {
+    type: mongoose.Schema.Types.Mixed,
+    required: true
+  }
+}, { _id: false });
+
+const automationRuleSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  trigger: {
+    type: triggerSchema,
+    required: true
+  },
+  actions: {
+    type: [actionSchema],
+    required: true
+  },
+  enabled: {
+    type: Boolean,
+    default: true
+  },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  lastTriggeredAt: {
+    type: Date,
+    default: null
+  },
+  executionCount: {
+    type: Number,
+    default: 0
+  }
 }, {
-    timestamps: true
+  timestamps: true
 });
 
-export const Automation = mongoose.model("Automation" , automationSchema)
+// Indexes for performance
+automationRuleSchema.index({ owner: 1, enabled: 1 });
+automationRuleSchema.index({ 'trigger.deviceId': 1 });
+
+const AutomationRule = mongoose.model('AutomationRule', automationRuleSchema);
+
+export default AutomationRule;

@@ -3,9 +3,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import { Dashboard } from "../models/dashBoard.model.js";
 
-/**
- * @desc Get all dashboard widgets for the current user
- */
+
 const getAllWidgets = asyncHandler(async (req, res) => {
   const widgets = await Dashboard.find({ user: req.user._id });
 
@@ -14,10 +12,7 @@ const getAllWidgets = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, widgets, "Fetched dashboard widgets"));
 });
 
-/**
- * @desc Add a new widget to the user's dashboard
- */
-// widgetController.js
+
 const addWidget = asyncHandler(async (req, res) => {
   const {
     type,
@@ -46,9 +41,7 @@ const addWidget = asyncHandler(async (req, res) => {
 });
 
 
-/**
- * @desc Update an existing widget
- */
+
 const updateWidget = asyncHandler(async (req, res) => {
   const { widgetId } = req.params;
   const { config } = req.body;
@@ -68,9 +61,7 @@ const updateWidget = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, updatedWidget, "Widget updated successfully"));
 });
 
-/**
- * @desc Delete a widget
- */
+
 const deleteWidget = asyncHandler(async (req, res) => {
   const { widgetId } = req.params;
 
@@ -88,9 +79,7 @@ const deleteWidget = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, deletedWidget, "Widget removed successfully"));
 });
 
-/**
- * @desc Reorder dashboard widgets
- */
+
 const reorderWidgets = asyncHandler(async (req, res) => {
   const { widgetOrder } = req.body;
 

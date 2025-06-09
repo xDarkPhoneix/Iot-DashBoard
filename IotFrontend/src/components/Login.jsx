@@ -12,7 +12,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
+    
     const success = await login(email, password);
     if (!success) {
       setError('Invalid credentials. Try admin@iot.com / password');

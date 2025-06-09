@@ -5,7 +5,6 @@ import { ApiError } from '../utils/ApiError.js';
 export const createDevice = async (req, res) => {
   try {
 
-    
 
     const device = {...req.body};
     const owner=req.user._id
@@ -22,11 +21,7 @@ export const createDevice = async (req, res) => {
     if(!deviceData){
          throw new ApiError(400,"Failed to create Device Data")
 
-    }
-    
-    //  owner: req.user._id
-
-    
+    }   
     res.status(201).json(device);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -35,6 +30,8 @@ export const createDevice = async (req, res) => {
 
 // Get all devices for the logged-in user
 export const getDevices = async (req, res) => {
+    console.log("hola");
+    
   try {
     const devices = await Device.find({ owner: req.user._id });
     res.json(devices);

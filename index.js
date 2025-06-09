@@ -11,7 +11,7 @@ const app = express();
 dotenv.config();
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: "http://localhost:5173",
     credential: true,
   })
 );
@@ -28,15 +28,15 @@ const server = app.listen(process.env.PORT, () => {
 });
 
 const io = new Server(server, {
-   pingTimeout:60000,
+  pingTimeout:60000,
   cors: {
     origin: "*", // Allow frontend origin
   },
 });
 
-io.on("connection", (socket) => {
-  console.log("Client connected:", socket.id);
-});
+// io.on("connection", (socket) => {
+//   console.log("Client connected:", socket.id);
+// });
 
 app.get("/api/v1/ir", (req, res) => {
   res.json({ irValue: sensorData });
@@ -50,6 +50,11 @@ app.post("/api/v1/post", (req, res) => {
   res.json("Hola is ready");
 });
 
+import DashboardRoutes from './src/routes/dashboard.routes.js'
+app.use("/api/v1/dashboard", DashboardRoutes);
+
+import AutomationRoutes from "./src/routes/automation.routes.js";
+app.use("/api/v1/automation", AutomationRoutes);
 //Device Routes
 import DeviceRoutes from "./src/routes/device.routes.js";
 app.use("/api/v1/devices", DeviceRoutes);
@@ -105,7 +110,7 @@ app.post("/api/v1/led", (req, res) => {
           const json = JSON.parse(data);
           console.log("Temp:", json.temperature);
           console.log("Humidity:", json.humidity);
-          io.emit("sensor-data", json);
+        //  io.emit("sensor-data", json);
         } catch (err) {
           console.error("Invalid JSON:", data);
         }
