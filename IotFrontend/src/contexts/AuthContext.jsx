@@ -81,7 +81,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
 const AuthContext = createContext(undefined);
-const url="http://localhost:8000"
+
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -99,7 +99,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
-        const response = await axios.get(`${url}/api/v1/users/current-user`, {
+        const response = await axios.get('/api/v1/users/current-user', {
           withCredentials: true,
         });
         setUser(response.data.data);
@@ -114,14 +114,10 @@ export const AuthProvider = ({ children }) => {
 
   // Login function
   const login = async (email, password) => {
-    console.log("HOLA");
-    console.log(email,password);
-    
-    
     setIsLoading(true);
     try {
       const response = await axios.post(
-        `${url}/api/v1/users/login`,
+        '/api/v1/users/login',
         { email, password },
         { withCredentials: true }
       );
@@ -144,7 +140,7 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(true);
     try {
       const response = await axios.post(
-          `${url}/api/v1/users/register`,
+        '/api/v1/users/register',
         { name: fullName, email, password, role },
         { withCredentials: true }
       );
@@ -166,7 +162,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     setIsLoading(true);
     try {
-      await axios.post(`${url}/api/v1/users/logout`, null, { withCredentials: true });
+      await axios.post('/api/v1/users/logout', null, { withCredentials: true });
     } catch (error) {
       // optionally handle error
     } finally {

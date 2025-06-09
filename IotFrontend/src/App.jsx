@@ -20,7 +20,7 @@ const AppContent = () => {
     );
   }
 
-  return user ? <Layout /> : <Login />;
+  return user ? <Layout /> : <AuthForm />;
 };
 
 function App() {
