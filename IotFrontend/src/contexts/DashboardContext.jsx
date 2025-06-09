@@ -222,10 +222,10 @@ export const DashboardProvider = ({ children }) => {
     // };
     const fetchDevices = async () => {
       try {
-        const response = await axios.post('/api/v1/get', { withCredentials: true });
+        const response = await axios.post('/api/v1/devices/get', { withCredentials: true });
         console.log(response);
         
-       // setDevices(response.data.data);
+       setDevices(response.data);
       } catch (error) {
         console.error('Failed to fetch widgets:', error);
       }
