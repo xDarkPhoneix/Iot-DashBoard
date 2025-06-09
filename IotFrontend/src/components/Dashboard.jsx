@@ -12,18 +12,18 @@ const Dashboard = () => {
   const onlineDevices = devices.filter(d => d.status === 'online').length;
   const totalDevices = devices.length;
   const activeAlerts = alerts.filter(a => !a.acknowledged).length;
-  const socket = io("http://localhost:8000")
+  //const socket = io("http://localhost:8000")
 
-  useEffect(() => {
-    socket.on("sensor-data", (payload) => {
-      console.log("Received:", payload);
+  // useEffect(() => {
+  //   socket.on("sensor-data", (payload) => {
+  //     console.log("Received:", payload);
       
-    });
+  //   });
 
-    return () => {
-      socket.off("sensor-data");
-    };
-  }, []);
+  //   return () => {
+  //     socket.off("sensor-data");
+  //   };
+  // }, []);
 
   return (
     <div className="p-6 space-y-6">

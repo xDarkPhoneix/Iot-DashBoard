@@ -27,12 +27,12 @@ const server = app.listen(process.env.PORT, () => {
   console.log(`Server running on http://localhost:${process.env.PORT}`);
 });
 
-const io = new Server(server, {
-  pingTimeout:60000,
-  cors: {
-    origin: "*", // Allow frontend origin
-  },
-});
+// const io = new Server(server, {
+//   pingTimeout:60000,
+//   cors: {
+//     origin: "*", // Allow frontend origin
+//   },
+// });
 
 // io.on("connection", (socket) => {
 //   console.log("Client connected:", socket.id);
