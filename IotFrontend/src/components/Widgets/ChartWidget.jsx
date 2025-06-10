@@ -32,49 +32,50 @@ const ChartWidget = ({ widget, onRemove }) => {
   const chartRef = useRef(null);
   const [showMenu, setShowMenu] = useState(false);
 
-  const device = devices.find(d => d.id === widget.deviceId);
-  const currentValue = device?.data?.values[widget.dataKey || ''];
+  const device = devices.find(d => d._id === widget.deviceId);
+  const history = device?.history || [];
+  const currentValue = history[history.length - 1] || 0;
 
-  const generateHistoricalData = () => {
-    const now = new Date();
-    const data = [];
-    const labels = [];
-
-    for (let i = 23; i >= 0; i--) {
-      const time = new Date(now.getTime() - i * 60 * 60 * 1000);
-      labels.push(time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+  // Generate labels for history data (e.g., "HH:MM")
+  useEffect(()=>{  
     
-
-      // const baseValue = currentValue || 20;
-      // const variance = baseValue * 0.1;
-      // const value = baseValue + (Math.random() - 0.5) * variance;
-      // data.push(Math.round(value * 10) / 10);
-      data.push(9,8,6,8)
-
+    
+    console.log("de", devices);
+    console.log(widget)
+  
+  },[])
+  const generateLabels = (count) => {
+    const now = new Date();
+    const labels = [];
+    for (let i = count - 1; i >= 0; i--) {
+    
+      
+      const time = new Date(now.getTime() - i * 5 * 1000); // 5s intervals
+      labels.push(time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
     }
-
-    return { labels, data };
+    return labels;
   };
 
-  const { labels, data } = generateHistoricalData();
+  const labels = generateLabels(history.length);
 
   const chartData = {
     labels,
     datasets: [
       {
-        label: widget.title,
-        data,
+        label: widget.title || 'Device Data',
+        data: history,
         borderColor: widget.config.color || '#3B82F6',
-        backgroundColor: widget.config.chartType === 'line'
-          ? `${widget.config.color || '#3B82F6'}20`
-          : widget.config.color || '#3B82F6',
+        backgroundColor:
+          widget.config.chartType === 'line'
+            ? `${widget.config.color || '#3B82F6'}20`
+            : widget.config.color || '#3B82F6',
         fill: widget.config.chartType === 'line',
         tension: 0.4,
         borderWidth: 2,
         pointRadius: widget.config.chartType === 'line' ? 3 : 0,
         pointHoverRadius: 6,
-      }
-    ]
+      },
+    ],
   };
 
   const options = {
@@ -125,7 +126,7 @@ const ChartWidget = ({ widget, onRemove }) => {
             </h3>
             <div className="flex items-center space-x-2 mt-1">
               <span className="text-2xl font-bold text-gray-900 dark:text-white">
-                {currentValue?.toFixed(1) || '0.0'}
+                {currentValue.toFixed(1)}
               </span>
               <TrendingUp className="w-4 h-4 text-green-500" />
             </div>
@@ -163,9 +164,11 @@ const ChartWidget = ({ widget, onRemove }) => {
       </div>
 
       <div className="mt-4 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-        <span>Last 24 hours</span>
+        <span>Live Data (5s interval)</span>
         <span className="flex items-center space-x-1">
-          <div className={`w-2 h-2 rounded-full ${device?.status === 'online' ? 'bg-green-500' : 'bg-red-500'}`} />
+          <div
+            className={`w-2 h-2 rounded-full ${device?.status === 'online' ? 'bg-green-500' : 'bg-red-500'}`}
+          />
           <span className="capitalize">{device?.status || 'offline'}</span>
         </span>
       </div>
