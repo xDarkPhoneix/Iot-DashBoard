@@ -7,7 +7,7 @@ import { Widget } from "../models/dashBoard.model.js";
 
 const getAllWidgets = asyncHandler(async (req, res) => {
   const widgets = await Widget.find({ owner: req.user._id });
-console.log(widgets);
+
 
   return res
     .status(200)

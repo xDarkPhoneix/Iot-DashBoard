@@ -26,6 +26,7 @@ ChartJS.register(
   Legend,
   Filler
 );
+// import { io } from "socket.io-client";
 
 const ChartWidget = ({ widget, onRemove }) => {
   const { devices } = useDashboard();
