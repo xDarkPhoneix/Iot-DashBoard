@@ -212,20 +212,20 @@ export const DashboardProvider = ({ children }) => {
 
   // Fetch initial widgets
   useEffect(() => {
-    const fetchWidgets = async () => {
-      try {
-        const response = await axios.get('/api/v1/dashboard/widgets', { withCredentials: true });
-        console.log("fetch", response);
+    // const fetchWidgets = async () => {
+    //   try {
+    //     const response = await axios.get('/api/v1/dashboard/widgets', { withCredentials: true });
+    //     console.log(response);
         
-        setWidgets(response.data.data);
-      } catch (error) {
-        console.error('Failed to fetch widgets:', error);
-      }
-    };
+    //     setWidgets(response.data.data);
+    //   } catch (error) {
+    //     console.error('Failed to fetch widgets:', error);
+    //   }
+    // };
     const fetchDevices = async () => {
       try {
         const response = await axios.post('/api/v1/devices/get', { withCredentials: true });
-        console.log(response);
+        console.log(response.data);
         
        setDevices(response.data);
       } catch (error) {
@@ -233,7 +233,7 @@ export const DashboardProvider = ({ children }) => {
       }
     };
 
-    fetchWidgets();
+    //fetchWidgets();
     fetchDevices();
   }, []);
 
@@ -356,6 +356,10 @@ export const DashboardProvider = ({ children }) => {
     ));
   };
 
+  const removeAlert = (id) => {
+  setAlerts(prev => prev.filter(alert => alert.id !== id));
+};
+
   const addAutomationRule = (rule) => {
     const newRule = { ...rule, id: `rule-${Date.now()}` };
     setAutomationRules(prev => [...prev, newRule]);
@@ -419,6 +423,7 @@ export const DashboardProvider = ({ children }) => {
       removeWidget,
       reorderWidgets,
       acknowledgeAlert,
+      removeAlert,
       addAutomationRule,
       updateAutomationRule,
       removeAutomationRule,

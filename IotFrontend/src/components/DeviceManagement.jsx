@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { useDashboard } from '../contexts/DashboardContext';
 import { Zap, Bluetooth, WifiOff, MapPin, Clock, Settings, Trash2, Plus, X, Save, BluetoothOff } from 'lucide-react';
-import AddDeviceModal from './modals/AddDeviceModal';
 
 const DeviceManagement = () => {
   const { devices, updateDevice, removeDevice, addDevice } = useDashboard();
@@ -10,6 +9,11 @@ const DeviceManagement = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showConfigModal, setShowConfigModal] = useState(false);
   const [configDevice, setConfigDevice] = useState(null);
+
+  useEffect(()=>{
+    console.log("vvv",devices);
+    
+  },[])
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -212,7 +216,7 @@ const DeviceManagement = () => {
   };
 
   return (
-    <div className="p-6 space-y-6">
+       <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
           Device Management
@@ -229,20 +233,20 @@ const DeviceManagement = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {devices.map((device) => (
           <div
-            key={device.id}
+            key={device._id}
             className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-all duration-200"
           >
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-blue-100 dark:bg-blue-900/50 rounded-lg">
-                  {getDeviceTypeIcon(device.type)}
+                  <Zap/>
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                     {device.name}
                   </h3>
                   <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">
-                    {device.type}
+                    Sensor
                   </p>
                 </div>
               </div>
@@ -340,11 +344,6 @@ const DeviceManagement = () => {
           </div>
         ))}
       </div>
-
-      <AddDeviceModal 
-        isOpen={showAddModal} 
-        onClose={() => setShowAddModal(false)} 
-      />
 
       <DeviceConfigModal />
     </div>

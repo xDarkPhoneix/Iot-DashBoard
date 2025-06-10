@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDashboard } from '../contexts/DashboardContext';
 import { X, Plus, BarChart3, Gauge, Activity, Settings } from 'lucide-react';
+import { useEffect } from 'react';
 
 const AddWidgetModal = ({ isOpen, onClose }) => {
   const { devices, addWidget } = useDashboard();
@@ -14,6 +15,8 @@ const AddWidgetModal = ({ isOpen, onClose }) => {
   const [thresholdMax, setThresholdMax] = useState(100);
 
   if (!isOpen) return null;
+
+  
 
   const widgetTypes = [
     {
@@ -92,6 +95,7 @@ const AddWidgetModal = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+     
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between">
@@ -158,7 +162,7 @@ const AddWidgetModal = ({ isOpen, onClose }) => {
                 <option value="">Select a device</option>
                 {devices.map((device) => (
                   <option key={device._id} value={device._id}>
-                    {device.name} 
+                    {device.name} ({device.location})
                   </option>
                 ))}
               </select>
