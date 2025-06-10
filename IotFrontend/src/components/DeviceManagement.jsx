@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useDashboard } from '../contexts/DashboardContext';
 import { Zap, Bluetooth, WifiOff, MapPin, Clock, Settings, Trash2, Plus, X, Save, BluetoothOff } from 'lucide-react';
+import AddDeviceModal from './modals/AddDeviceModal';
 
 const DeviceManagement = () => {
   const { devices, updateDevice, removeDevice, addDevice } = useDashboard();
@@ -223,7 +224,7 @@ const DeviceManagement = () => {
           <Plus className="w-4 h-4" />
           <span>Add Device</span>
         </button>
-      </div>
+      </div> 
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {devices.map((device) => (
@@ -339,6 +340,11 @@ const DeviceManagement = () => {
           </div>
         ))}
       </div>
+
+      <AddDeviceModal 
+        isOpen={showAddModal} 
+        onClose={() => setShowAddModal(false)} 
+      />
 
       <DeviceConfigModal />
     </div>
