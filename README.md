@@ -34,6 +34,7 @@ IoT DashBoard is a lightweight and scalable frontend application built to interf
 - **Responsive Design:** A clean and fully responsive interface that works seamlessly on desktop, tablet, and mobile devices.
 - **Light & Dark Modes:** Switch between light and dark themes for optimal viewing comfort.
 - **Device Management:** A simulated context manages device status (online/offline) and data streams.
+- **ScreenShots Of Dashboard:** [Click Here](https://github.com/xDarkPhoneix/Iot-DashBoard/tree/main/screensorts)
 
 ---
 
