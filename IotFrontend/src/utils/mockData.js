@@ -9,7 +9,7 @@ export const mockDevices = [
     data: {
       timestamp: new Date(),
       values: {
-        temperature: 22.5,
+        temperature: 8,
         humidity: 45.2,
         // pressure: 1013.2,
         // light: 350

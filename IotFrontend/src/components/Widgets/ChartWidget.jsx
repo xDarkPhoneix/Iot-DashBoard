@@ -26,30 +26,78 @@ ChartJS.register(
   Legend,
   Filler
 );
+// import { io } from "socket.io-client";
 
 const ChartWidget = ({ widget, onRemove }) => {
   const { devices } = useDashboard();
   const chartRef = useRef(null);
   const [showMenu, setShowMenu] = useState(false);
 
-  const device = devices.find(d => d.id === widget.deviceId);
+  const [historicalData, setHistoricalData] = useState({
+    labels: [],
+    data: []
+  });
+
+  //  const socket = io("http://localhost:8000")
+  
+  // useEffect(() => {
+  //   socket.on("sensor-data", (payload) => {
+  //     //if (payload.deviceId !== widget.deviceId) return;
+
+  //     const now = new Date();
+  //     const label = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  //     const newValue = payload[widget.dataKey] || 0;
+
+  //     setHistoricalData(prev => ({
+  //       labels: [...prev.labels, label].slice(-24),
+  //       data: [...prev.data, newValue].slice(-24)
+  //     }));
+  //   });
+
+  //   return () => {
+  //     socket.off("sensor-data");
+  //   };
+  // }, [widget.deviceId, widget.dataKey]);
+    // useEffect(() => {
+  
+    //   console.log(devices);
+      
+    //   socket.on("sensor-data", (payload) => {
+    //     console.log("Received:", payload);
+    //     generateHistoricalData(payload)
+        
+    //   });
+  
+    //   return () => {
+    //     socket.off("sensor-data");
+    //   };
+    // }, []);
+  
+
+  const device = devices.find(d => d._id === widget.deviceId);
   const currentValue = device?.data?.values[widget.dataKey || ''];
 
   const generateHistoricalData = () => {
     const now = new Date();
     const data = [];
     const labels = [];
+    console.log(currentValue);
+    
+    
+    
 
     for (let i = 23; i >= 0; i--) {
       const time = new Date(now.getTime() - i * 60 * 60 * 1000);
       labels.push(time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
     
-
-      // const baseValue = currentValue || 20;
-      // const variance = baseValue * 0.1;
-      // const value = baseValue + (Math.random() - 0.5) * variance;
-      // data.push(Math.round(value * 10) / 10);
-      data.push(9,8,6,8)
+      
+      
+      const baseValue = currentValue || 20;
+      const variance = baseValue * 0.1;
+      const value = baseValue + (Math.random() - 0.5) * variance;
+      data.push(Math.round(value * 10) / 10);
+      ///data.push(8,3,421,1)
 
     }
 

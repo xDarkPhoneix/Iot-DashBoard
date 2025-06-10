@@ -29,11 +29,7 @@ const sensorDataSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.Mixed,
     default: {}
   },
-  timestamp: {
-    type: Date,
-    default: Date.now,
-    index: true
-  }
+  
 }, {
   timestamps: false
 });
@@ -46,4 +42,4 @@ sensorDataSchema.index({ timestamp: -1 });
 // TTL index to automatically delete old data (optional - 90 days)
 sensorDataSchema.index({ timestamp: 1 }, { expireAfterSeconds: 7776000 });
 
-export default mongoose.model('SensorData', sensorDataSchema);
+export const SensorData = mongoose.model('SensorData',sensorDataSchema)

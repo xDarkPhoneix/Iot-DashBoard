@@ -35,6 +35,8 @@ const WidgetGrid = () => {
   );
 
   const renderWidget = (widget) => {
+   
+    
     const commonProps = {
       widget,
       onRemove: () => removeWidget(widget._id),

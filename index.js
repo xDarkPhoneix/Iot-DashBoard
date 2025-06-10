@@ -6,6 +6,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./src/db/connectDB.js";
 import { Server } from "socket.io";
+import { SensorData } from "./src/models/sensor.model.js";
 
 const app = express();
 dotenv.config();
@@ -50,9 +51,8 @@ app.post("/api/v1/post", (req, res) => {
   res.json("Hola is ready");
 });
 
-import DashboardRoutes from './src/routes/dashboard.routes.js'
+import DashboardRoutes from "./src/routes/dashboard.routes.js";
 app.use("/api/v1/dashboard", DashboardRoutes);
-
 
 import AutomationRoutes from "./src/routes/automation.routes.js";
 app.use("/api/v1/automation", AutomationRoutes);
@@ -62,6 +62,7 @@ app.use("/api/v1/devices", DeviceRoutes);
 
 //UserRoutes
 import UserRoutes from "./src/routes/user.routes.js";
+import mongoose from "mongoose";
 app.use("/api/v1/users", UserRoutes);
 
 // Set up Serial connection to HC-05 Bluetooth module
@@ -108,12 +109,25 @@ app.post("/api/v1/led", (req, res) => {
     if (["t", "T"].includes(commandToSend)) {
       parser.on("data", (data) => {
         try {
-          const json = JSON.parse(data);
-          console.log("Temp:", json.temperature);
-          console.log("Humidity:", json.humidity);
-        //  io.emit("sensor-data", json);
+          const parsedData = JSON.parse(data);
+          const unit="°C and %";
+          console.log("hola");
+          console.log(parsedData);
+          
+          sensorDataBuffer.push({
+            deviceId: parsedData.deviceId,
+            device:"684745644879e4020d394424", // Link to actual device (if applicable)
+            value:[parsedData.temperature,parsedData.humidity], // Data value (can be an object depending on your sensor)
+            unit:unit, // e.g., "°C", "%"
+           // timestamp: new Date(parsedData.timestamp) || new Date(), // Timestamp
+          });
+          console.log("Temp:", parsedData.temperature);
+          console.log("Humidity:", parsedData.humidity);
+          //  io.emit("sensor-data", parsedData);
         } catch (err) {
           console.error("Invalid JSON:", data);
+          console.log(err);
+          
         }
       });
     } else {
@@ -123,3 +137,41 @@ app.post("/api/v1/led", (req, res) => {
     return res.status(200).json({ message: "Command sent successfully" });
   });
 });
+
+let sensorDataBuffer=[];
+
+const saveBufferedData = async () => {
+  if (sensorDataBuffer.length > 0) {
+    try {
+      // Bulk insert the buffered data into MongoDB
+      await SensorData.insertMany(sensorDataBuffer);
+
+      console.log(`Stored ${sensorDataBuffer.length} data entries into the database.`);
+
+      // Clear the buffer after saving
+      sensorDataBuffer = [];
+    } catch (error) {
+      console.error('Error saving data to database:', error);
+    }
+  }
+};
+
+// Set interval to save data every 15 minutes (900,000 ms)
+setInterval(saveBufferedData,  30*1000); // 15 minutes in milliseconds1 * 60 *
+
+// API route to get the latest sensor data
+app.get('/sensor/data', async (req, res) => {
+  try {
+    const data = await SensorData.find()
+      .sort({ timestamp: -1 })
+      .limit(1); // Get the most recent entry
+    if (!data.length) {
+      return res.status(404).json({ message: 'No sensor data found' });
+    }
+    return res.status(200).json(data[0]);
+  } catch (error) {
+    console.error('Error fetching sensor data:', error);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
