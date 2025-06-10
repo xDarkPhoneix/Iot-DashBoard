@@ -194,6 +194,16 @@ const AuthForm = () => {
             </button>
           </form>
 
+          <div className="mt-8 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+            <p className="text-sm text-gray-600 dark:text-gray-400 font-medium mb-2">Demo Accounts:</p>
+            <div className="space-y-1 text-xs text-gray-600 dark:text-gray-400">
+              <p><strong>Admin:</strong> ayush1@gmail.com / password:1234</p>
+              
+            </div>
+          </div>
+
+
+
           {/* Toggle Link */}
           <div className="mt-6 text-center">
             <p className="text-slate-400 text-sm">

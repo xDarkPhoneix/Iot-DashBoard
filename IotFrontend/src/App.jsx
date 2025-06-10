@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { DashboardProvider } from './contexts/DashboardContext';
@@ -9,6 +9,7 @@ import AuthForm from './components/AuthForm';
 
 const AppContent = () => {
   const { user, isLoading } = useAuth();
+  useEffect(()=>{},[])
    
 
   if (isLoading) {
