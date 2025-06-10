@@ -62,8 +62,9 @@ const AddDeviceModal = ({ isOpen, onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!newDevice.name || !newDevice.location) {
-      alert('Please fill in all required fields');
+
+    if (newDevice.name || !newDevice.location) {
+      alert('Future Scope ');
       return;
     }
 

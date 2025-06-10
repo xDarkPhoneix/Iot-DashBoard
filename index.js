@@ -160,15 +160,15 @@ const saveBufferedData = async () => {
 setInterval(saveBufferedData,  30*1000); // 15 minutes in milliseconds1 * 60 *
 
 // API route to get the latest sensor data
-app.get('/sensor/data', async (req, res) => {
+app.get('/api/v1/sensor/data', async (req, res) => {
   try {
     const data = await SensorData.find()
       .sort({ timestamp: -1 })
-      .limit(1); // Get the most recent entry
+      .limit(6); // Get the most recent entry
     if (!data.length) {
       return res.status(404).json({ message: 'No sensor data found' });
     }
-    return res.status(200).json(data[0]);
+    return res.status(200).json(data);
   } catch (error) {
     console.error('Error fetching sensor data:', error);
     return res.status(500).json({ message: 'Internal Server Error' });

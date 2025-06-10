@@ -14,11 +14,14 @@ export const useDashboard = () => {
 
 export const DashboardProvider = ({ children }) => {
   const [devices, setDevices] = useState([]);
+  const [selectedDataKey, setSelectedDataKey]=useState("")
   const [widgets, setWidgets] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [automationRules, setAutomationRules] = useState([]);
   const [layouts, setLayouts] = useState([]);
   const [currentLayout, setCurrentLayoutState] = useState('main');
+  const [sensor ,setSensor] =useState([]);
+  const [humid , setHumid]=useState([])
 
   // const socket = io("http://localhost:8000")
   
@@ -38,6 +41,37 @@ export const DashboardProvider = ({ children }) => {
   
   // Fetch initial widgets
   useEffect(() => {
+    const sensorData =async()=>{
+    try{
+      const response = await axios.get('/api/v1/sensor/data' ,{withCredentials:true})
+      console.log("ses",response.data);
+      const data=[] 
+       response.data.map((t)=>{
+        data.push(t.value)
+      })
+      console.log(data)
+      const temp=[]
+      const hum=[]
+      data.map((x)=>{
+        console.log("lll",x[0]);
+        temp.push(x[0])
+        hum.push(x[1])
+        
+      })
+
+      setSensor(prev =>[...prev , temp])
+      setHumid(prev =>[...prev , hum])
+      // const array = prev =>[...prev , data]
+      // console.log("array", array);
+      
+      
+      // setSensor(prev =>[...prev , response])
+
+    }
+    catch{
+
+    }
+  }
     const fetchWidgets = async () => {
       try {
         const response = await axios.get('/api/v1/dashboard/widgets', { withCredentials: true });
@@ -61,6 +95,7 @@ export const DashboardProvider = ({ children }) => {
 
     fetchWidgets();
     fetchDevices();
+    sensorData();
   }, []);
 
   // Simulate periodic device data updates
@@ -73,7 +108,7 @@ export const DashboardProvider = ({ children }) => {
             timestamp: new Date(),
             values: {
               ...device.data?.values,
-              temerature:20,
+              temperature:20,
               // temperature: Math.round((20 + Math.random() * 15) * 10) / 10,
               humidity: Math.round((40 + Math.random() * 30) * 10) / 10,
               motion: Math.random() > 0.8,
@@ -86,6 +121,7 @@ export const DashboardProvider = ({ children }) => {
     return () => clearInterval(interval);
   }, []);
 
+  
   const updateDevice = (deviceId, updates) => {
     setDevices(prev =>
       prev.map(device =>
@@ -99,7 +135,8 @@ export const DashboardProvider = ({ children }) => {
     setWidgets(prev => prev.filter(widget => widget.deviceId !== deviceId));
   };
 
-  const addDevice = (device) => {
+  const addDevice = async(device) => {
+    await axios.post('/api/v1/devices' ,{withCredentials:true})
     const newDevice = {
       ...device,
       id: `device-${Date.now()}`,
@@ -122,6 +159,7 @@ export const DashboardProvider = ({ children }) => {
     }));
   };
 
+  
   const addWidget = async (widget) => {
     try {
       const response = await axios.post('/api/v1/dashboard/addWidget', widget, {
@@ -241,6 +279,10 @@ export const DashboardProvider = ({ children }) => {
       automationRules,
       layouts,
       currentLayout,
+      sensor,
+      humid,
+      setSelectedDataKey,
+      selectedDataKey,
       updateDevice,
       removeDevice,
       addDevice,
@@ -255,7 +297,8 @@ export const DashboardProvider = ({ children }) => {
       updateAutomationRule,
       removeAutomationRule,
       setCurrentLayout,
-      exportData
+      exportData,
+      
     }}>
       {children}
     </DashboardContext.Provider>

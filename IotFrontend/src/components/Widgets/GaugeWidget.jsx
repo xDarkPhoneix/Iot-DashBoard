@@ -1,28 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDashboard } from '../../contexts/DashboardContext';
-import { MoreVertical, AlertTriangle, X, Settings, GripVertical } from 'lucide-react';
+import { GripVertical, MoreVertical, AlertTriangle, Settings, X } from 'lucide-react';
 
 const GaugeWidget = ({ widget, onRemove }) => {
-  const { devices } = useDashboard();
+  const { devices, sensor, humid } = useDashboard();
   const [showMenu, setShowMenu] = useState(false);
+  const [history, setHistory] = useState([]);
 
-  const device = devices.find(d => d.id === widget.deviceId);
-  const currentValue = device?.data?.values[widget.dataKey || ''] || 0;
+  // Find the corresponding device
+  const device = devices.find((d) => d._id === widget.deviceId);
 
-  const min = widget.config.threshold?.min || 0;
-  const max = widget.config.threshold?.max || 100;
+  // Update history based on dataKey
+  useEffect(() => {
+    if (widget.dataKey === 'temperature') {
+      console.log("temp", sensor);
+      
+      setHistory(sensor || []);
+    } else if (widget.dataKey === 'humidity') {
+      setHistory(humid || []);
+    }
+  }, [widget.dataKey, sensor, humid]);
+
+  const currentRaw = history.length ? history[history.length - 1] : 0;
+  const currentValue = typeof currentRaw === 'number' ? currentRaw : parseFloat(currentRaw?.slice?.(-1)) || 0;
+
+  const min = widget.config?.threshold?.min ?? 0;
+  const max = widget.config?.threshold?.max ?? 100;
+  const color = widget.config?.color ?? '#3B82F6';
+
   const percentage = Math.min(Math.max(((currentValue - min) / (max - min)) * 100, 0), 100);
-
   const isInThreshold = currentValue >= min && currentValue <= max;
-  const color = widget.config.color || '#3B82F6';
 
   const radius = 80;
   const circumference = 2 * Math.PI * radius;
-  const strokeDasharray = circumference;
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-all duration-200 group">
+      {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-3">
           <GripVertical className="w-5 h-5 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity cursor-grab" />
@@ -34,9 +49,7 @@ const GaugeWidget = ({ widget, onRemove }) => {
               <span className="text-sm text-gray-500 dark:text-gray-400">
                 {device?.name || 'Unknown Device'}
               </span>
-              {!isInThreshold && (
-                <AlertTriangle className="w-4 h-4 text-red-500" />
-              )}
+              {!isInThreshold && <AlertTriangle className="w-4 h-4 text-red-500" />}
             </div>
           </div>
         </div>
@@ -67,6 +80,7 @@ const GaugeWidget = ({ widget, onRemove }) => {
         </div>
       </div>
 
+      {/* Gauge Display */}
       <div className="flex flex-col items-center justify-center">
         <div className="relative w-48 h-48">
           <svg className="w-full h-full transform -rotate-90" viewBox="0 0 200 200">
@@ -87,7 +101,7 @@ const GaugeWidget = ({ widget, onRemove }) => {
               strokeWidth="8"
               fill="none"
               strokeLinecap="round"
-              strokeDasharray={strokeDasharray}
+              strokeDasharray={circumference}
               strokeDashoffset={strokeDashoffset}
               className="transition-all duration-500 ease-in-out"
             />
@@ -101,11 +115,12 @@ const GaugeWidget = ({ widget, onRemove }) => {
               {widget.dataKey}
             </span>
             <span className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-              {percentage.toFixed(0)}%
+              {percentage.toFixed(1)}%
             </span>
           </div>
         </div>
 
+        {/* Range Display */}
         <div className="w-full mt-4 space-y-2">
           <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
             <span>Min: {min}</span>
@@ -122,6 +137,7 @@ const GaugeWidget = ({ widget, onRemove }) => {
           </div>
         </div>
 
+        {/* Status */}
         <div className="mt-4 flex items-center justify-between w-full text-sm">
           <span className="text-gray-500 dark:text-gray-400">Status:</span>
           <span className={`font-medium ${isInThreshold ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>

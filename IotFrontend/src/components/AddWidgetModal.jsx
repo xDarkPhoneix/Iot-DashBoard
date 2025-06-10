@@ -4,10 +4,9 @@ import { X, Plus, BarChart3, Gauge, Activity, Settings } from 'lucide-react';
 import { useEffect } from 'react';
 
 const AddWidgetModal = ({ isOpen, onClose }) => {
-  const { devices, addWidget } = useDashboard();
+  const { devices, addWidget,selectedDataKey, setSelectedDataKey } = useDashboard();
   const [selectedType, setSelectedType] = useState('chart');
   const [selectedDevice, setSelectedDevice] = useState('');
-  const [selectedDataKey, setSelectedDataKey] = useState('');
   const [widgetTitle, setWidgetTitle] = useState('');
   const [chartType, setChartType] = useState('line');
   const [color, setColor] = useState('#3B82F6');

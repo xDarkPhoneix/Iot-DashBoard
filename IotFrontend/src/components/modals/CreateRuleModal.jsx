@@ -83,7 +83,7 @@ const CreateRuleModal = ({ isOpen, onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!ruleName || !triggerDevice || !triggerDataKey || !triggerValue || actions.length === 0) {
+    if (!ruleName || !triggerDevice  || !triggerValue || actions.length === 0) {
       alert('Please fill in all required fields and add at least one action');
       return;
     }
@@ -226,7 +226,7 @@ const CreateRuleModal = ({ isOpen, onClose }) => {
                 </select>
               </div>
 
-              <div>
+              {/* <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Data Key *
                 </label>
@@ -244,7 +244,7 @@ const CreateRuleModal = ({ isOpen, onClose }) => {
                     </option>
                   ))}
                 </select>
-              </div>
+              </div> */}
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">

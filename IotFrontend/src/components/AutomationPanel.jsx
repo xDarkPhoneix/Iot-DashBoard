@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { useDashboard } from '../contexts/DashboardContext';
 import { Play, Pause, Plus, Trash2, Edit, Zap } from 'lucide-react';
 import CreateRuleModal from './modals/CreateRuleModal';
+import Toast from './modals/ToastModal';
 
 const AutomationPanel = () => {
   const { automationRules, updateAutomationRule, removeAutomationRule } = useDashboard();
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   const toggleRule = (ruleId, enabled) => {
     updateAutomationRule(ruleId, { enabled });
@@ -108,7 +110,7 @@ const AutomationPanel = () => {
             </div>
 
             <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 space-y-4">
-              <div>
+              {/* <div>
                 <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
                   Trigger Condition
                 </h4>
@@ -118,7 +120,7 @@ const AutomationPanel = () => {
                   {getConditionText(rule.trigger.condition)}{' '}
                   <span className="font-medium">{String(rule.trigger.value)}</span>
                 </p>
-              </div>
+              </div> */}
 
               <div>
                 <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
@@ -154,12 +156,21 @@ const AutomationPanel = () => {
               Create your first automation rule to start automating your IoT devices.
             </p>
             <button
-              onClick={() => setShowCreateModal(true)}
+              onClick={() => setShowToast(true)}
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 mx-auto transition-colors"
             >
               <Plus className="w-4 h-4" />
               <span>Create Rule</span>
             </button>
+            
+      {showToast && (
+        <Toast
+          type="success"
+          message="Operation Successful!"
+          onClose={() => setShowToast(false)}
+          duration={4000}
+        />
+      )}
           </div>
         )}
       </div>
