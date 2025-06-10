@@ -212,16 +212,16 @@ export const DashboardProvider = ({ children }) => {
 
   // Fetch initial widgets
   useEffect(() => {
-    // const fetchWidgets = async () => {
-    //   try {
-    //     const response = await axios.get('/api/v1/dashboard/widgets', { withCredentials: true });
-    //     console.log(response);
+    const fetchWidgets = async () => {
+      try {
+        const response = await axios.get('/api/v1/dashboard/widgets', { withCredentials: true });
+        console.log(response);
         
-    //     setWidgets(response.data.data);
-    //   } catch (error) {
-    //     console.error('Failed to fetch widgets:', error);
-    //   }
-    // };
+        setWidgets(response.data.data);
+      } catch (error) {
+        console.error('Failed to fetch widgets:', error);
+      }
+    };
     const fetchDevices = async () => {
       try {
         const response = await axios.post('/api/v1/devices/get', { withCredentials: true });
@@ -233,7 +233,7 @@ export const DashboardProvider = ({ children }) => {
       }
     };
 
-    //fetchWidgets();
+    fetchWidgets();
     fetchDevices();
   }, []);
 

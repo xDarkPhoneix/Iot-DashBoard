@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { useDashboard } from '../contexts/DashboardContext';
 import { Zap, Bluetooth, WifiOff, MapPin, Clock, Settings, Trash2, Plus, X, Save, BluetoothOff } from 'lucide-react';
+import { useEffect } from 'react';
+import AddDeviceModal from './modals/AddDeviceModal';
 
 const DeviceManagement = () => {
   const { devices, updateDevice, removeDevice, addDevice } = useDashboard();
@@ -344,6 +346,10 @@ const DeviceManagement = () => {
           </div>
         ))}
       </div>
+      <AddDeviceModal
+      isOpen={showAddModal}
+      onClose ={()=>setShowAddModal(false)}
+      />
 
       <DeviceConfigModal />
     </div>

@@ -112,8 +112,6 @@ const WidgetGrid = () => {
                 <div className="h-full w-full bg-white dark:bg-gray-800 rounded-lg shadow p-4">
                   {renderWidget(widget)}
                 </div>
-              <div key={widget._id} className="widget-drag-handle">
-                {renderWidget(widget)}
               </div>
             ))}
           </GridLayout>
