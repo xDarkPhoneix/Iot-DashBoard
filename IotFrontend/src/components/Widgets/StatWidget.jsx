@@ -18,14 +18,14 @@ const StatWidget = ({ widget, onRemove }) => {
   const device = devices.find((d) => d._id === widget.deviceId); // or d.id based on your schema
 
   useEffect(() => {
-    console.log(widget);
+    // console.log(widget);
     
     if (widget.dataKey === 'temperature') {
       console.log("hii",sensor);
       
       setHistory(sensor);
     } else if (widget.dataKey === 'humidity') {
-      console.log("hello",humid);
+      // console.log("hello",humid);
       
       setHistory(humid);
     }

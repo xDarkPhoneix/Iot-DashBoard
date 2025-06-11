@@ -10,7 +10,7 @@ import {
   Title,
   Tooltip,
   Legend,
-  Filler
+  Filler,
 } from 'chart.js';
 import { useDashboard } from '../../contexts/DashboardContext';
 import { MoreVertical, TrendingUp, X, Settings, GripVertical } from 'lucide-react';
@@ -32,48 +32,62 @@ const ChartWidget = ({ widget, onRemove }) => {
   const chartRef = useRef(null);
   const [showMenu, setShowMenu] = useState(false);
   const [history, setHistory] = useState([]);
+  const [index, setIndex] = useState(0); // <-- Active dataset index
 
   const device = devices.find(d => d._id === widget.deviceId);
 
   useEffect(() => {
-    if (widget.dataKey === 'temperature') {
-      setHistory(sensor);
-      console.log("Sensor History:", sensor);
-    } else if (widget.dataKey === 'humidity') {
-      setHistory(humid);
-      console.log("Humidity History:", humid);
-    }
+    const selectedHistory = widget.dataKey === 'temperature' ? sensor : humid;
+    setHistory(selectedHistory);
+    setIndex(0); // reset index when dataKey changes
   }, [widget.dataKey, sensor, humid]);
+
+  useEffect(() => {
+    if (!history.length) return;
+
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % history.length);
+    }, 6000);
+
+    return () => clearInterval(interval);
+  }, [history]);
 
   const generateLabels = (count) => {
     const now = new Date();
     return Array.from({ length: count }).map((_, i) => {
       const time = new Date(now.getTime() - (count - 1 - i) * 5000);
-      return time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      return time.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      });
     });
   };
 
-  const labels = history[0] ? generateLabels(history[0].length) : [];
+  const currentDataset = history[index] || [];
+  const labels = generateLabels(currentDataset.length);
 
   const chartData = {
     labels,
-    datasets: history.map((dataset, idx) => ({
-      label: `${widget.title || 'Data'} ${idx + 1}`,
-      data: dataset,
-      borderColor: widget.config?.color || ['#3B82F6', '#10B981', '#F59E0B'][idx % 3],
-      backgroundColor:
-        widget.config?.chartType === 'line'
-          ? `${widget.config?.color || '#3B82F6'}20`
-          : widget.config?.color || '#3B82F6',
-      fill: widget.config?.chartType === 'line',
-      tension: 0.4,
-      borderWidth: 2,
-      pointRadius: widget.config?.chartType === 'line' ? 3 : 0,
-      pointHoverRadius: 6,
-    })),
+    datasets: [
+      {
+        label: `${widget.title || 'Data'} ${index + 1}`,
+        data: currentDataset,
+        borderColor: widget.config?.color || '#3B82F6',
+        backgroundColor:
+          widget.config?.chartType === 'line'
+            ? `${widget.config?.color || '#3B82F6'}20`
+            : widget.config?.color || '#3B82F6',
+        fill: widget.config?.chartType === 'line',
+        tension: 0.4,
+        borderWidth: 2,
+        pointRadius: widget.config?.chartType === 'line' ? 3 : 0,
+        pointHoverRadius: 6,
+      },
+    ],
   };
 
-  const currentValue = history[0]?.at(-1) ?? 0;
+  const currentValue = currentDataset.at(-1) ?? 0;
 
   const options = {
     responsive: true,
@@ -156,7 +170,7 @@ const ChartWidget = ({ widget, onRemove }) => {
       </div>
 
       <div className="mt-4 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-        <span>Live Data (5s interval)</span>
+        <span>Live Data (3s interval)</span>
         <span className="flex items-center space-x-1">
           <div
             className={`w-2 h-2 rounded-full ${device?.status === 'online' ? 'bg-green-500' : 'bg-red-500'}`}

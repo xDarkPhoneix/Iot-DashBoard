@@ -6,23 +6,30 @@ const GaugeWidget = ({ widget, onRemove }) => {
   const { devices, sensor, humid } = useDashboard();
   const [showMenu, setShowMenu] = useState(false);
   const [history, setHistory] = useState([]);
+  const [index, setIndex] = useState(0);
 
-  // Find the corresponding device
   const device = devices.find((d) => d._id === widget.deviceId);
 
   // Update history based on dataKey
   useEffect(() => {
-    if (widget.dataKey === 'temperature') {
-      console.log("temp", sensor);
-      
-      setHistory(sensor || []);
-    } else if (widget.dataKey === 'humidity') {
-      setHistory(humid || []);
-    }
+    const selected = widget.dataKey === 'temperature' ? sensor : humid;
+    setHistory(selected || []);
+    setIndex(0); // Reset index when data changes
   }, [widget.dataKey, sensor, humid]);
 
-  const currentRaw = history.length ? history[history.length - 1] : 0;
-  const currentValue = typeof currentRaw === 'number' ? currentRaw : parseFloat(currentRaw?.slice?.(-1)) || 0;
+  // Cycle through data every 3 seconds
+  useEffect(() => {
+    if (!history.length) return;
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % history.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [history]);
+
+  const rawData = history[index] || [];
+  const currentRaw = rawData.at(-1);
+  const currentValue = typeof currentRaw === 'number' ? currentRaw : parseFloat(currentRaw) || 0;
 
   const min = widget.config?.threshold?.min ?? 0;
   const max = widget.config?.threshold?.max ?? 100;

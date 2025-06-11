@@ -40,38 +40,41 @@ export const DashboardProvider = ({ children }) => {
   //   }, []);
   
   // Fetch initial widgets
+
+useEffect(() => {
+  const fetchSensorData = async () => {
+    try {
+      const response = await axios.get('/api/v1/sensor/data', { withCredentials: true });
+      console.log("ses", response.data);
+
+      const data = response.data.map(t => t.value); // assuming each `t.value` is [temp, hum]
+
+      const temp = [];
+      const hum = [];
+
+      data.forEach(x => {
+        console.log("lll", x[0]);
+        temp.push(x[0]);
+        hum.push(x[1]);
+      });
+
+      setSensor(prev => [...prev, temp]);
+      setHumid(prev => [...prev, hum]);
+
+    } catch (error) {
+      console.error("Error fetching sensor data:", error);
+    }
+  };
+
+  fetchSensorData(); // run immediately
+
+  const intervalId = setInterval(fetchSensorData, 6 * 1000); // run every 30 seconds
+
+  return () => clearInterval(intervalId); // cleanup interval on unmount
+}, []); // empty dependency array: runs only once on mount
+
   useEffect(() => {
-    const sensorData =async()=>{
-    try{
-      const response = await axios.get('/api/v1/sensor/data' ,{withCredentials:true})
-      console.log("ses",response.data);
-      const data=[] 
-       response.data.map((t)=>{
-        data.push(t.value)
-      })
-      console.log(data)
-      const temp=[]
-      const hum=[]
-      data.map((x)=>{
-        console.log("lll",x[0]);
-        temp.push(x[0])
-        hum.push(x[1])
-        
-      })
-
-      setSensor(prev =>[...prev , temp])
-      setHumid(prev =>[...prev , hum])
-      // const array = prev =>[...prev , data]
-      // console.log("array", array);
-      
-      
-      // setSensor(prev =>[...prev , response])
-
-    }
-    catch{
-
-    }
-  }
+    
     const fetchWidgets = async () => {
       try {
         const response = await axios.get('/api/v1/dashboard/widgets', { withCredentials: true });
@@ -95,7 +98,7 @@ export const DashboardProvider = ({ children }) => {
 
     fetchWidgets();
     fetchDevices();
-    sensorData();
+    
   }, []);
 
   // Simulate periodic device data updates
