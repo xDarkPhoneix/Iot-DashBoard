@@ -22,6 +22,7 @@ export const DashboardProvider = ({ children }) => {
   const [currentLayout, setCurrentLayoutState] = useState('main');
   const [sensor ,setSensor] =useState([]);
   const [humid , setHumid]=useState([])
+  const [sensorState , SetsensorState]=useState("off")
 
   // const socket = io("http://localhost:8000")
   
@@ -137,6 +138,12 @@ useEffect(() => {
     setDevices(prev => prev.filter(device => device.id !== deviceId));
     setWidgets(prev => prev.filter(widget => widget.deviceId !== deviceId));
   };
+
+  const OnOff = async (State) =>{
+    console.log(State);
+    
+    await axios.post('/api/v1/led' ,{TempState: State},{withCredentials : true})
+  }
 
   const addDevice = async(device) => {
     await axios.post('/api/v1/devices' ,{withCredentials:true})
@@ -301,6 +308,9 @@ useEffect(() => {
       removeAutomationRule,
       setCurrentLayout,
       exportData,
+      OnOff,
+      sensorState,
+      SetsensorState
       
     }}>
       {children}

@@ -28,7 +28,7 @@ ChartJS.register(
 );
 
 const ChartWidget = ({ widget, onRemove }) => {
-  const { devices, sensor, humid } = useDashboard();
+  const { devices, sensor, humid,sensorState } = useDashboard();
   const chartRef = useRef(null);
   const [showMenu, setShowMenu] = useState(false);
   const [history, setHistory] = useState([]);
@@ -175,7 +175,7 @@ const ChartWidget = ({ widget, onRemove }) => {
           <div
             className={`w-2 h-2 rounded-full ${device?.status === 'online' ? 'bg-green-500' : 'bg-red-500'}`}
           />
-          <span className="capitalize">{device?.status || 'offline'}</span>
+          <span className="capitalize">{sensorState==="off" ? ("offline") : ("online") || 'offline'}</span>
         </span>
       </div>
     </div>

@@ -85,6 +85,8 @@ bluetoothPort.on("error", (err) => {
 // API endpoint to control LED via Bluetooth
 app.post("/api/v1/led", (req, res) => {
   const { TempState } = req.body;
+  console.log(TempState);
+  
 
   let commandToSend = null;
   let responseMessage = null;

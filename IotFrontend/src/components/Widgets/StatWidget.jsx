@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 
 const StatWidget = ({ widget, onRemove }) => {
-  const { devices, sensor, humid } = useDashboard();
+  const { devices, sensor, humid , sensorState } = useDashboard();
   const [showMenu, setShowMenu] = useState(false);
   const [history, setHistory] = useState([]);
 
@@ -135,7 +135,7 @@ const currentValue =
                   device?.status === 'online' ? 'bg-green-500' : 'bg-red-500'
                 }`}
               />
-              <span className="capitalize">{device?.status || 'offline'}</span>
+              <span className="capitalize">{sensorState==="off" ? ("offline") : ("online") || 'offline'}</span>
             </div>
           </div>
         </div>
