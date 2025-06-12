@@ -156,21 +156,13 @@ const AutomationPanel = () => {
               Create your first automation rule to start automating your IoT devices.
             </p>
             <button
-              onClick={() => setShowToast(true)}
+              onClick={() => setShowCreateModal(true)}
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 mx-auto transition-colors"
             >
               <Plus className="w-4 h-4" />
               <span>Create Rule</span>
             </button>
-            
-      {showToast && (
-        <Toast
-          type="success"
-          message="Operation Successful!"
-          onClose={() => setShowToast(false)}
-          duration={4000}
-        />
-      )}
+          
           </div>
         )}
       </div>
