@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Shield, Eye, EyeOff, User, Mail, Lock, LogIn, UserPlus } from 'lucide-react';
+import { useDashboard } from '../contexts/DashboardContext';
 
 const AuthForm = () => {
   const { login, register } = useAuth();
@@ -13,6 +14,9 @@ const AuthForm = () => {
     role: 'user',
   });
   const [errorMsg, setErrorMsg] = useState('');
+  useEffect(()=>{
+
+  },[])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -27,6 +31,10 @@ const AuthForm = () => {
     setErrorMsg('');
     if (isLogin) {
       const result = await login(formData.email, formData.password);
+    
+     console.log(result);
+     
+      
       if (!result.success) setErrorMsg(result.message);
     } else {
       const result = await register(formData);

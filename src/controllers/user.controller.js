@@ -220,6 +220,35 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
 });
 
 
+const authenticateUser=asyncHandler(async(req,res)=>{
+ 
+  const {ownerID}=req.body
+
+ const authenticatedUser=await User.findByIdAndUpdate(req.user?._id,{
+    $set:{
+      ownerID:ownerID,
+    }
+  },{
+    new :true
+  }
+)
+
+if(!authenticatedUser){
+  throw new ApiError(400,"Failed to authenticate User")
+
+
+}
+
+
+res.status(201).json({authenticatedUser})
+
+  
+  
+
+
+})
+
+
 
 export {
   registerUser,
@@ -229,4 +258,5 @@ export {
   changeCurrentPassword,
   getCurrentUser,
   updateAccountDetails,
+  authenticateUser
 };

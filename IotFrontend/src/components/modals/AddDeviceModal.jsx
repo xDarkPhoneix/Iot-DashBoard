@@ -70,30 +70,30 @@ const AddDeviceModal = ({ isOpen, onClose }) => {
 
     const deviceToAdd = {
       ...newDevice,
-      data: {
-        timestamp: new Date(),
-        values: {
-          ...(newDevice.type === 'sensor' && {
-            temperature: 20 + Math.random() * 10,
-            humidity: 40 + Math.random() * 20,
-            battery: 80 + Math.random() * 20
-          }),
-          ...(newDevice.type === 'actuator' && {
-            power: Math.random() > 0.5,
-            brightness: Math.floor(Math.random() * 100)
-          }),
-          ...(newDevice.type === 'controller' && {
-            temperature: 20 + Math.random() * 5,
-            targetTemp: 22,
-            power: true
-          }),
-          ...(newDevice.type === 'camera' && {
-            recording: Math.random() > 0.5,
-            motion: Math.random() > 0.8,
-            storage: 75 + Math.random() * 20
-          })
-        }
-      }
+      // data: {
+      //   timestamp: new Date(),
+      //   values: {
+      //     ...(newDevice.type === 'sensor' && {
+      //       temperature: 20 + Math.random() * 10,
+      //       humidity: 40 + Math.random() * 20,
+      //       battery: 80 + Math.random() * 20
+      //     }),
+      //     ...(newDevice.type === 'actuator' && {
+      //       power: Math.random() > 0.5,
+      //       brightness: Math.floor(Math.random() * 100)
+      //     }),
+      //     ...(newDevice.type === 'controller' && {
+      //       temperature: 20 + Math.random() * 5,
+      //       targetTemp: 22,
+      //       power: true
+      //     }),
+      //     ...(newDevice.type === 'camera' && {
+      //       recording: Math.random() > 0.5,
+      //       motion: Math.random() > 0.8,
+      //       storage: 75 + Math.random() * 20
+      //     })
+      //  }
+      // }
     };
 
     addDevice(deviceToAdd);

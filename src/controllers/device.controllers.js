@@ -31,8 +31,6 @@ export const createDevice = async (req, res) => {
 // Get all devices for the logged-in user
 export const getDevices = async (req, res) => {
     
-    
-    
   try {
     const devices = await Device.find({ owner: req.user._id });
     res.json(devices);
@@ -40,6 +38,27 @@ export const getDevices = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const getDevicesbyID = async (req, res) => {
+    const {ownerID}=req.body
+
+     try {
+    const devices = await Device.find({ owner: ownerID });
+    res.json(devices);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+    
+    
+  try {
+    const devices = await Device.find({ deviceId:deviceId });
+    res.json(devices);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
 
 // Get a single device by ID
 export const getDeviceById = async (req, res) => {

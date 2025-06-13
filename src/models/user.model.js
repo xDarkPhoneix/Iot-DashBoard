@@ -29,6 +29,9 @@ const userSchema = new Schema({
     role: {
     type: String,
   },
+  ownerID:{
+    type:String
+  }
 
 },{timestamps: true})
 

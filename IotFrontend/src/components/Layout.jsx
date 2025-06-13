@@ -30,6 +30,7 @@ const Layout = () => {
 
   useEffect(()=>{
     console.log(user);
+    localStorage.setItem("user",JSON.stringify(user))
     
   },[])
 

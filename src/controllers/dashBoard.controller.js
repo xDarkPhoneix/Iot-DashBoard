@@ -15,6 +15,7 @@ const getAllWidgets = asyncHandler(async (req, res) => {
 });
 
 
+
 const addWidget = asyncHandler(async (req, res) => {
   const {
     type,
