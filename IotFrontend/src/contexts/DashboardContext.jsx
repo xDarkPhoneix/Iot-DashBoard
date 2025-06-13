@@ -176,20 +176,14 @@ export const DashboardProvider = ({ children }) => {
     );
   };
 
-  const addDevice = async (device) => {
-    const deviceId = `device${Math.round((40 + Math.random() * 30) * 10) / 10}`;
-    const category = "temperature";
-    const units = "°C";
-
-    console.log("device", device);
-
-    await axios.post("/api/v1/devices", { withCredentials: true });
+  const addDevice = async(device) => {
+    await axios.post('/api/v1/devices' ,{withCredentials:true})
     const newDevice = {
       ...device,
       id: `device-${Date.now()}`,
-      lastSeen: new Date(),
+      lastSeen: new Date()
     };
-    setDevices((prev) => [...prev, newDevice]);
+    setDevices(prev => [...prev, newDevice]);
   };
 
   const updateDeviceControl = (deviceId, controlId, value) => {
