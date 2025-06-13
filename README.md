@@ -15,8 +15,6 @@ A modern, responsive web dashboard designed to monitor and manage IoT devices in
 - [Usage](#usage)
 - [Configuration](#configuration)
 - [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
 
 ---
 
