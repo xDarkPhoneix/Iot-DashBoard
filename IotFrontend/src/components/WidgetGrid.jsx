@@ -106,16 +106,19 @@ const WidgetGrid = () => {
             isResizable
           >
             {widgets.map((widget) => (
-              <div
-                key={widget._id}
-                className="widget-drag-handle"
-                style={{ minHeight: '220px', minWidth: '200px' }} // fallback min size
-              >
-                <div className="h-full w-full bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-                  {renderWidget(widget)}
-                </div>
-              </div>
-            ))}
+  <div
+    key={widget._id}
+    style={{ minHeight: '220px', minWidth: '200px' }}
+  >
+    <div className="h-full w-full bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+                  {/* Drag handle is inside here */}
+      <div className="widget-drag-handle cursor-move mb-2 text-gray-400">
+        <span className="text-xs">Drag</span>
+      </div>
+      {renderWidget(widget)}
+    </div>
+  </div>
+))}
           </GridLayout>
         )}
       </div>
