@@ -146,12 +146,10 @@ useEffect(() => {
   }
 
   const addDevice = async(device) => {
-    await axios.post('/api/v1/devices' ,{withCredentials:true})
-    const newDevice = {
-      ...device,
-      id: `device-${Date.now()}`,
-      lastSeen: new Date()
-    };
+    console.log("x",device)
+    await axios.post('/api/v1/devices' ,device,{withCredentials:true})
+    const newDevice = device
+    console.log("y ", newDevice)
     setDevices(prev => [...prev, newDevice]);
   };
 

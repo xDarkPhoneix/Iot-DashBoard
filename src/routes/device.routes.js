@@ -5,7 +5,7 @@ import { createDevice, getDevices } from '../controllers/device.controllers.js';
 
 const router = express.Router();
 
-router.route('/').post(verifyJWT,createDevice)
+router.route('/devices').post(verifyJWT,createDevice)
 router.route('/get').post(verifyJWT,getDevices)
 //   .get(protect, getDevices)
 //   .post(protect, createDevice);
