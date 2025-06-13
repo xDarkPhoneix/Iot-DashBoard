@@ -67,7 +67,8 @@ app.use("/api/v1/users", UserRoutes);
 
 // Set up Serial connection to HC-05 Bluetooth module
 const bluetoothPort = new SerialPort({
-  path:"/dev/tty.HC-05-DevB",       //"/dev/rfcomm0", // Linux usually maps Bluetooth to /dev/rfcomm0 //change path for windows
+  path: "COM13", // Linux usually maps Bluetooth to /dev/rfcomm0 //change path for windows
+  // path: "/dev/rfcomm0", // Linux usually maps Bluetooth to /dev/rfcomm0 //change path for windows
   baudRate: 9600,
 });
 
@@ -84,6 +85,8 @@ bluetoothPort.on("error", (err) => {
 // API endpoint to control LED via Bluetooth
 app.post("/api/v1/led", (req, res) => {
   const { TempState } = req.body;
+  console.log(TempState);
+  
 
   let commandToSend = null;
   let responseMessage = null;

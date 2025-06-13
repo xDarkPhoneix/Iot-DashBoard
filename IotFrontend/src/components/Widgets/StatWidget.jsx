@@ -9,21 +9,21 @@ import {
 } from 'lucide-react';
 
 const StatWidget = ({ widget, onRemove }) => {
-  const { devices, sensor, humid } = useDashboard();
+  const { devices, sensor, humid , sensorState } = useDashboard();
   const [showMenu, setShowMenu] = useState(false);
   const [history, setHistory] = useState([]);
 
   const device = devices.find((d) => d._id === widget.deviceId); // or d.id based on your schema
 
   useEffect(() => {
-    console.log(widget);
+    // console.log(widget);
     
     if (widget.dataKey === 'temperature') {
       console.log("hii",sensor);
       
       setHistory(sensor);
     } else if (widget.dataKey === 'humidity') {
-      console.log("hello",humid);
+      // console.log("hello",humid);
       
       setHistory(humid);
     }
@@ -117,7 +117,7 @@ const currentValue =
                   device?.status === 'online' ? 'bg-green-500' : 'bg-red-500'
                 }`}
               />
-              <span className="capitalize">{device?.status || 'offline'}</span>
+              <span className="capitalize">{sensorState==="off" ? ("offline") : ("online") || 'offline'}</span>
             </div>
           </div>
         </div>
