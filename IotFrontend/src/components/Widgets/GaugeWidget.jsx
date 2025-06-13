@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDashboard } from '../../contexts/DashboardContext';
-import { GripVertical, MoreVertical, AlertTriangle, Settings, X } from 'lucide-react';
+import { GripVertical, Trash2, AlertTriangle,} from 'lucide-react';
+
 
 const GaugeWidget = ({ widget, onRemove }) => {
   const { devices, sensor, humid } = useDashboard();
@@ -61,30 +62,13 @@ const GaugeWidget = ({ widget, onRemove }) => {
           </div>
         </div>
 
-        <div className="relative">
-          <button
-            onClick={() => setShowMenu(!showMenu)}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-          >
-            <MoreVertical className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-          </button>
-
-          {showMenu && (
-            <div className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-10">
-              <button className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-2">
-                <Settings className="w-4 h-4" />
-                <span>Configure</span>
-              </button>
-              <button
-                onClick={onRemove}
-                className="w-full px-4 py-2 text-left text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center space-x-2"
-              >
-                <X className="w-4 h-4" />
-                <span>Remove</span>
-              </button>
-            </div>
-          )}
-        </div>
+        <button
+  onClick={onRemove}
+  className="p-2 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition-colors"
+  title="Remove Widget"
+>
+  <Trash2 className="w-5 h-5 text-red-500" />
+</button>
       </div>
 
       {/* Gauge Display */}

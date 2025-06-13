@@ -151,7 +151,7 @@ const WidgetGrid = () => {
               <div
                 key={widget._id}
                 className="widget-drag-handle"
-                style={{ minHeight: '220px', minWidth: '200px' }}
+                style={{ minHeight: '220px', minWidth: '200px' }} // fallback min size
               >
                 <div className="h-full w-full bg-white dark:bg-gray-800 rounded-lg shadow p-4">
                   {renderWidget(widget)}

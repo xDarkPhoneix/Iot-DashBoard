@@ -11,16 +11,11 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState('dark');
-
-  useEffect(() => {
-    const storedTheme = localStorage.getItem('iot_theme');
-    if (storedTheme) {
-      setTheme(storedTheme);
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setTheme('dark');
-    }
-  }, []);
+  const [theme, setTheme] = useState(() => {
+    const stored = localStorage.getItem('iot_theme');
+    if (stored) return stored;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  });
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');

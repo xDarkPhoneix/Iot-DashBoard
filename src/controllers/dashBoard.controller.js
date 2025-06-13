@@ -49,7 +49,7 @@ const updateWidget = asyncHandler(async (req, res) => {
   const { config } = req.body;
 
   const updatedWidget = await Widget.findOneAndUpdate(
-    { _id: widgetId, user: req.user._id },
+    { _id: widgetId, owner: req.user._id },
     { $set: { config } },
     { new: true }
   );
@@ -69,7 +69,7 @@ const deleteWidget = asyncHandler(async (req, res) => {
 
   const deletedWidget = await Widget.findOneAndDelete({
     _id: widgetId,
-    user: req.user._id,
+    owner: req.user._id,
   });
 
   if (!deletedWidget) {
